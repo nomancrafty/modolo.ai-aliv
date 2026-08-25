@@ -1,5 +1,6 @@
 import { Twitter, Linkedin, Facebook } from "lucide-react";
-import modoloLogo from "@/assets/modolo-logo.png";
+// light lockup: the stock mark is slate-on-transparent and vanishes on the dark ground
+import modoloLogo from "@/assets/modolo-logo-light.png";
 import { SteadyTrace } from "./VitalTrace";
 import { useReveal, useScrollProgress } from "@/hooks/useMotion";
 
@@ -66,7 +67,7 @@ const Footer = () => {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="w-11 h-11 border border-rule flex items-center justify-center text-stone-mid hover:text-coral-ink hover:border-coral-ink transition-colors duration-300"
+                  className="w-11 h-11 rounded-[10px] border border-rule-soft flex items-center justify-center text-stone-mid hover:text-coral-ink hover:border-coral transition-colors duration-300"
                   aria-label={social.label}
                 >
                   <social.icon className="w-[18px] h-[18px]" strokeWidth={1.5} aria-hidden="true" />

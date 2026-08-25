@@ -108,7 +108,7 @@ const assistantServices: Service[] = [
 function ServiceEntry({ service }: { service: Service }) {
   const Icon = service.icon;
   return (
-    <div className="rv border-t border-ink pt-6">
+    <div className="rv panel p-6 md:p-7 h-full">
       <div className="flex items-center gap-3 mb-4">
         <Icon
           className="w-[18px] h-[18px] text-coral shrink-0"
@@ -147,8 +147,8 @@ function Division({
 }) {
   return (
     <div>
-      <p className="label text-stone-mid mb-8 rv">{title}</p>
-      <div className={`grid gap-x-12 gap-y-14 ${columns}`}>
+      <p className="eyebrow eyebrow-muted mb-8 rv">{title}</p>
+      <div className={`grid gap-4 ${columns}`}>
         {services.map((s) => (
           <ServiceEntry key={s.title} service={s} />
         ))}
@@ -163,14 +163,12 @@ const Features = () => {
   const office = useReveal<HTMLDivElement>({ threshold: 0.08, stagger: 45 });
 
   return (
-    <section id="features" className="bg-paper-deep py-[var(--chapter-y)]">
+    <section id="features" className="band-deep py-[var(--chapter-y)]">
       <div className="shell">
         {/* Masthead */}
         <div ref={head} className="grid gap-x-16 gap-y-8 md:grid-cols-12 items-end mb-[clamp(4rem,9vw,7rem)]">
           <div className="md:col-span-7">
-            <p className="label text-stone-mid mb-8 rv">
-              MODOLO AI Technology Solutions
-            </p>
+            <p className="eyebrow mb-8 rv">MODOLO AI Technology Solutions</p>
             <h2 className="display-lg text-ink rv-wipe">
               MODOLO AI — Demand Generation &amp; AI Office Operations
             </h2>
@@ -219,7 +217,7 @@ const Features = () => {
                 <Phone className="w-[18px] h-[18px] text-ink" strokeWidth={1.5} aria-hidden="true" />
                 <h4 className="label text-ink">Receptionist</h4>
               </div>
-              <div className="grid gap-y-12">
+              <div className="grid gap-4">
                 {receptionistServices.map((s) => (
                   <ServiceEntry key={s.title} service={s} />
                 ))}
@@ -231,7 +229,7 @@ const Features = () => {
                 <ClipboardList className="w-[18px] h-[18px] text-ink" strokeWidth={1.5} aria-hidden="true" />
                 <h4 className="label text-ink">Executive Assistant</h4>
               </div>
-              <div className="grid gap-y-12">
+              <div className="grid gap-4">
                 {assistantServices.map((s) => (
                   <ServiceEntry key={s.title} service={s} />
                 ))}

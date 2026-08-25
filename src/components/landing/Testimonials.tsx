@@ -31,22 +31,22 @@ const Testimonials = () => {
   const body = useReveal<HTMLDivElement>({ threshold: 0.1, stagger: 90 });
 
   return (
-    <section id="testimonials" className="bg-paper-deep py-[var(--chapter-y)]">
+    <section id="testimonials" className="band-deep py-[var(--chapter-y)]">
       <div className="shell">
         <div ref={head} className="mb-[clamp(3.5rem,8vw,6rem)] max-w-4xl">
-          <p className="label text-stone-mid mb-8 rv">Real Results</p>
+          <p className="eyebrow mb-8 rv">Real Results</p>
           <h2 className="display-lg text-ink rv-wipe">
             Real Results From Medical, Dental &amp; Law Offices
           </h2>
         </div>
 
-        <div ref={body} className="grid gap-x-12 gap-y-16 md:grid-cols-3">
+        <div ref={body} className="grid gap-4 md:grid-cols-3">
           {/* h-full + mt-auto keeps the result figures on one line across the
               row, however long each quote runs. */}
           {testimonials.map((t) => (
             <figure
               key={t.name}
-              className="rv border-t border-ink pt-8 flex flex-col h-full"
+              className="rv panel p-7 md:p-8 flex flex-col h-full"
             >
               <blockquote>
                 <p className="voice text-ink text-[clamp(1.375rem,2.1vw,1.75rem)]">

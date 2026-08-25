@@ -62,7 +62,7 @@ function Step({ step }: { step: (typeof steps)[number] }) {
   const ref = useReveal<HTMLDivElement>({ threshold: 0.15, stagger: 50 });
 
   return (
-    <div ref={ref} className="grid gap-x-12 gap-y-8 md:grid-cols-12 py-14 border-t border-ink">
+    <div ref={ref} className="grid gap-x-12 gap-y-8 md:grid-cols-12 panel p-7 md:p-10 mb-5">
       {/* Index */}
       <div className="md:col-span-2">
         <span className="figure block text-[2.5rem] leading-none text-coral rv">
@@ -95,7 +95,7 @@ function Step({ step }: { step: (typeof steps)[number] }) {
 
       {/* Readings */}
       <div className="md:col-span-4">
-        <p className="label text-stone-mid mb-5 rv">Results</p>
+        <p className="eyebrow eyebrow-muted mb-5 rv">Results</p>
         <dl className="space-y-5">
           {step.metrics.map((m) => (
             <div key={m.label} className="rv">
@@ -122,7 +122,7 @@ const HowItWorks = () => {
           className="grid gap-x-16 gap-y-8 md:grid-cols-12 items-end mb-[clamp(3rem,7vw,5rem)]"
         >
           <div className="md:col-span-7">
-            <p className="label text-stone-mid mb-8 rv">How It Works</p>
+            <p className="eyebrow mb-8 rv">How It Works</p>
             <h2 className="display-lg text-ink rv-wipe">
               From Ad Click to Confirmed Appointment
             </h2>
@@ -136,7 +136,6 @@ const HowItWorks = () => {
           {steps.map((step) => (
             <Step key={step.number} step={step} />
           ))}
-          <div className="border-t border-ink" />
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import modoloLogo from "@/assets/modolo-logo.png";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+// light lockup: the stock mark is slate-on-transparent and vanishes on the dark ground
+import modoloLogo from "@/assets/modolo-logo-light.png";
 import { useScrolled } from "@/hooks/useMotion";
 
 const NAV = [
@@ -24,7 +25,7 @@ const Header = () => {
     <header
       className={`fixed top-0 inset-x-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-500 ease-editorial ${
         scrolled
-          ? "bg-paper/92 backdrop-blur-md border-rule"
+          ? "bg-paper/85 backdrop-blur-xl border-rule"
           : "bg-transparent border-transparent"
       }`}
     >
@@ -59,7 +60,7 @@ const Header = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="label text-stone-mid hover:text-ink transition-colors duration-300 link-rule py-2"
+                className="text-[0.9375rem] text-stone-mid hover:text-ink transition-colors duration-300 link-rule py-2"
               >
                 {item.label}
               </button>
@@ -67,8 +68,9 @@ const Header = () => {
           </nav>
 
           <div className="hidden lg:block shrink-0">
-            <button onClick={() => scrollToSection("cta")} className="btn-ink !py-3 !px-6">
+            <button onClick={() => scrollToSection("cta")} className="btn-outline">
               <span>Book Now</span>
+              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
             </button>
           </div>
 
@@ -93,16 +95,17 @@ const Header = () => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="label text-stone-mid hover:text-ink transition-colors text-left py-5 border-b border-rule min-h-[44px]"
+                  className="text-base text-stone-mid hover:text-ink transition-colors text-left py-5 border-b border-rule min-h-[44px]"
                 >
                   {item.label}
                 </button>
               ))}
               <button
                 onClick={() => scrollToSection("cta")}
-                className="btn-ink mt-8 w-full justify-center"
+                className="btn-accent mt-8 w-full"
               >
                 <span>Book Now</span>
+                <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
               </button>
             </nav>
           </div>
