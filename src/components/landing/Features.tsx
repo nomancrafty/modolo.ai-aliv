@@ -1,9 +1,7 @@
-import { 
-  Phone, 
-  ClipboardList, 
-  Megaphone,
-  Star, 
-  Search, 
+import {
+  Phone,
+  ClipboardList,
+  Search,
   TrendingUp,
   Tv,
   Instagram,
@@ -14,11 +12,22 @@ import {
   MessageSquare,
   Info,
   HelpCircle,
-  Users
+  Users,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import type { LucideIcon } from "lucide-react";
+import { useReveal } from "@/hooks/useMotion";
 
-const advertisingServices = [
+/* Copy below is unchanged from the existing site. Only its presentation
+   has moved: from bordered cards to a ruled capability index. */
+
+type Service = {
+  icon: LucideIcon;
+  title: string;
+  description?: string;
+  bullets: string[];
+};
+
+const advertisingServices: Service[] = [
   {
     icon: Tv,
     title: "TV Advertising",
@@ -39,7 +48,7 @@ const advertisingServices = [
   },
 ];
 
-const marketingServices = [
+const marketingServices: Service[] = [
   {
     icon: Award,
     title: "Practice Brand",
@@ -60,7 +69,7 @@ const marketingServices = [
   },
 ];
 
-const receptionistServices = [
+const receptionistServices: Service[] = [
   {
     icon: Info,
     title: "Provides Information",
@@ -78,7 +87,7 @@ const receptionistServices = [
   },
 ];
 
-const assistantServices = [
+const assistantServices: Service[] = [
   {
     icon: FileText,
     title: "Fills Out Forms",
@@ -96,151 +105,135 @@ const assistantServices = [
   },
 ];
 
-const Features = () => {
+function ServiceEntry({ service }: { service: Service }) {
+  const Icon = service.icon;
   return (
-    <section id="features" className="py-24 bg-background">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary mb-6">
-            <span className="text-sm font-medium text-secondary-foreground">
+    <div className="rv border-t border-ink pt-6">
+      <div className="flex items-center gap-3 mb-4">
+        <Icon
+          className="w-[18px] h-[18px] text-coral shrink-0"
+          strokeWidth={1.5}
+          aria-hidden="true"
+        />
+        <h5 className="display-sm text-ink">{service.title}</h5>
+      </div>
+      {service.description && (
+        <p className="text-[0.9375rem] leading-relaxed text-stone-mid mb-5 max-w-[38ch]">
+          {service.description}
+        </p>
+      )}
+      <ul>
+        {service.bullets.map((bullet) => (
+          <li
+            key={bullet}
+            className="text-[0.875rem] text-stone-mid py-2.5 border-t border-rule leading-[1.6]"
+          >
+            {bullet}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Division({
+  title,
+  services,
+  columns,
+}: {
+  title: string;
+  services: Service[];
+  columns: string;
+}) {
+  return (
+    <div>
+      <p className="label text-stone-mid mb-8 rv">{title}</p>
+      <div className={`grid gap-x-12 gap-y-14 ${columns}`}>
+        {services.map((s) => (
+          <ServiceEntry key={s.title} service={s} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const Features = () => {
+  const head = useReveal<HTMLDivElement>({ threshold: 0.15, stagger: 70 });
+  const demand = useReveal<HTMLDivElement>({ threshold: 0.08, stagger: 45 });
+  const office = useReveal<HTMLDivElement>({ threshold: 0.08, stagger: 45 });
+
+  return (
+    <section id="features" className="bg-paper-deep py-[var(--chapter-y)]">
+      <div className="shell">
+        {/* Masthead */}
+        <div ref={head} className="grid gap-x-16 gap-y-8 md:grid-cols-12 items-end mb-[clamp(4rem,9vw,7rem)]">
+          <div className="md:col-span-7">
+            <p className="label text-stone-mid mb-8 rv">
               MODOLO AI Technology Solutions
-            </span>
+            </p>
+            <h2 className="display-lg text-ink rv-wipe">
+              MODOLO AI — Demand Generation &amp; AI Office Operations
+            </h2>
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            MODOLO AI — <span className="text-gradient">Demand Generation & AI Office Operations</span>
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Specialized AI systems for medical clinics, dental practices, and law offices. We increase lead volume, qualify prospects, automate follow-ups, boost bookings, and reduce staff workload — fully compliant with regulated industries.
-          </p>
-        </div>
-
-        {/* DEMAND GENERATION */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <h3 className="text-2xl md:text-3xl font-bold mb-2">
-              <span className="text-gradient">DEMAND GENERATION</span>
-            </h3>
-          </div>
-
-          {/* Advertising */}
-          <div className="mb-12">
-            <h4 className="text-xl font-bold text-center mb-8 text-muted-foreground">Advertising</h4>
-            <div className="grid md:grid-cols-3 gap-6">
-              {advertisingServices.map((service) => (
-                <Card key={service.title} className="border-border hover:border-accent/30 transition-all duration-300 hover:shadow-soft bg-card">
-                  <CardContent className="p-6">
-                    <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
-                      <service.icon className="w-6 h-6 text-accent" />
-                    </div>
-                    <h5 className="text-lg font-bold mb-2 text-card-foreground">{service.title}</h5>
-                    <p className="text-sm text-muted-foreground mb-4">{service.description}</p>
-                    <ul className="space-y-1">
-                      {service.bullets.map((bullet, i) => (
-                        <li key={i} className="text-xs text-muted-foreground flex items-start gap-2">
-                          <span className="text-accent mt-1">•</span>
-                          {bullet}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* Marketing */}
-          <div>
-            <h4 className="text-xl font-bold text-center mb-8 text-muted-foreground">Marketing</h4>
-            <div className="grid md:grid-cols-3 gap-6">
-              {marketingServices.map((service) => (
-                <Card key={service.title} className="border-border hover:border-primary/30 transition-all duration-300 hover:shadow-soft bg-card">
-                  <CardContent className="p-6">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                      <service.icon className="w-6 h-6 text-primary" />
-                    </div>
-                    <h5 className="text-lg font-bold mb-2 text-card-foreground">{service.title}</h5>
-                    <p className="text-sm text-muted-foreground mb-4">{service.description}</p>
-                    <ul className="space-y-1">
-                      {service.bullets.map((bullet, i) => (
-                        <li key={i} className="text-xs text-muted-foreground flex items-start gap-2">
-                          <span className="text-primary mt-1">•</span>
-                          {bullet}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+          <div className="md:col-span-5">
+            <p className="prose-body rv">
+              Specialized AI systems for medical clinics, dental practices, and
+              law offices. We increase lead volume, qualify prospects, automate
+              follow-ups, boost bookings, and reduce staff workload — fully
+              compliant with regulated industries.
+            </p>
           </div>
         </div>
 
-        {/* OFFICE AUTOMATION */}
-        <div>
-          <div className="text-center mb-12">
-            <h3 className="text-2xl md:text-3xl font-bold mb-2">
-              <span className="text-gradient">OFFICE AUTOMATION</span>
-            </h3>
+        {/* Demand generation */}
+        <div ref={demand} className="mb-[clamp(5rem,11vw,9rem)]">
+          <div className="flex items-baseline gap-6 mb-14">
+            <h3 className="display-md text-ink">Demand Generation</h3>
+            <span className="rv-rule flex-1 h-px bg-ink origin-left" />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            {/* Receptionist */}
+          <div className="space-y-16">
+            <Division
+              title="Advertising"
+              services={advertisingServices}
+              columns="md:grid-cols-3"
+            />
+            <Division
+              title="Marketing"
+              services={marketingServices}
+              columns="md:grid-cols-3"
+            />
+          </div>
+        </div>
+
+        {/* Office automation */}
+        <div ref={office}>
+          <div className="flex items-baseline gap-6 mb-14">
+            <h3 className="display-md text-ink">Office Automation</h3>
+            <span className="rv-rule flex-1 h-px bg-ink origin-left" />
+          </div>
+
+          <div className="grid gap-x-16 gap-y-16 lg:grid-cols-2">
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Phone className="w-6 h-6 text-primary" />
-                </div>
-                <h4 className="text-xl font-bold text-card-foreground">Receptionist</h4>
+              <div className="flex items-center gap-3 mb-8">
+                <Phone className="w-[18px] h-[18px] text-ink" strokeWidth={1.5} aria-hidden="true" />
+                <h4 className="label text-ink">Receptionist</h4>
               </div>
-              <div className="space-y-6">
-                {receptionistServices.map((service) => (
-                  <Card key={service.title} className="border-border bg-card">
-                    <CardContent className="p-5">
-                      <div className="flex items-center gap-3 mb-3">
-                        <service.icon className="w-5 h-5 text-primary" />
-                        <h5 className="font-semibold text-card-foreground">{service.title}</h5>
-                      </div>
-                      <ul className="space-y-1 pl-8">
-                        {service.bullets.map((bullet, i) => (
-                          <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
-                            <span className="text-primary mt-1">•</span>
-                            {bullet}
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
+              <div className="grid gap-y-12">
+                {receptionistServices.map((s) => (
+                  <ServiceEntry key={s.title} service={s} />
                 ))}
               </div>
             </div>
 
-            {/* Executive Assistant */}
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
-                  <ClipboardList className="w-6 h-6 text-accent" />
-                </div>
-                <h4 className="text-xl font-bold text-card-foreground">Executive Assistant</h4>
+              <div className="flex items-center gap-3 mb-8">
+                <ClipboardList className="w-[18px] h-[18px] text-ink" strokeWidth={1.5} aria-hidden="true" />
+                <h4 className="label text-ink">Executive Assistant</h4>
               </div>
-              <div className="space-y-6">
-                {assistantServices.map((service) => (
-                  <Card key={service.title} className="border-border bg-card">
-                    <CardContent className="p-5">
-                      <div className="flex items-center gap-3 mb-3">
-                        <service.icon className="w-5 h-5 text-accent" />
-                        <h5 className="font-semibold text-card-foreground">{service.title}</h5>
-                      </div>
-                      <ul className="space-y-1 pl-8">
-                        {service.bullets.map((bullet, i) => (
-                          <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
-                            <span className="text-accent mt-1">•</span>
-                            {bullet}
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
+              <div className="grid gap-y-12">
+                {assistantServices.map((s) => (
+                  <ServiceEntry key={s.title} service={s} />
                 ))}
               </div>
             </div>

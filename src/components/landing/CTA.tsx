@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { CheckCircle, Search, Phone } from "lucide-react";
+import { Check, ArrowRight, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useReveal } from "@/hooks/useMotion";
+
+/* Copy, fields, consent text, webhook and submit flow are all unchanged.
+   Only the presentation is new: a ruled two-column brief instead of a
+   centered card. */
 
 const CTA = () => {
   const [formData, setFormData] = useState({
@@ -19,9 +20,13 @@ const CTA = () => {
     marketingConsent: false,
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const ref = useReveal<HTMLDivElement>({ threshold: 0.08, stagger: 45 });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -41,6 +46,8 @@ const CTA = () => {
       });
       return;
     }
+
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("https://n8n.srv942069.hstgr.cloud/webhook/082b648b-0108-4b64-8172-ad2ceb309ece", {
@@ -75,6 +82,8 @@ const CTA = () => {
         description: "Please try again or call us directly.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -92,208 +101,273 @@ const CTA = () => {
   ];
 
   return (
-    <section id="cta" className="py-24 bg-background relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-coral-light/20 via-transparent to-transparent rounded-full blur-3xl" />
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Main CTA */}
-          <div className="text-center mb-12">
-            {/* Icon */}
-            <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-8 shadow-glow">
-              <Search className="w-8 h-8 text-primary-foreground" />
-            </div>
-
-            {/* Heading */}
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              Book AI Free Consultation
-            </h2>
-
-            <p className="text-xl font-medium text-primary mb-6">
-              Discover How Many Patients & Clients You're Losing Right Now
-            </p>
-
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              In 3 minutes, see exactly where calls, bookings, and follow-ups are slipping through the cracks.
-            </p>
-
-            {/* Audit Features */}
-            <div className="grid sm:grid-cols-2 gap-3 max-w-lg mx-auto mb-8">
-              {auditFeatures.map((feature, index) => (
-                <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span>{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* A2P Contact Form */}
-          {!isSubmitted ? (
-            <form onSubmit={handleSubmit} className="max-w-2xl mx-auto mb-8 p-8 bg-card rounded-2xl border border-border shadow-soft">
-              <div className="flex items-center justify-center gap-2 mb-6">
-                <Phone className="w-5 h-5 text-primary" />
-                <span className="text-lg font-semibold text-foreground">(888) 487-2171</span>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <Label htmlFor="firstName" className="text-sm font-medium text-foreground">First Name *</Label>
-                  <Input
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    className="mt-1"
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="lastName" className="text-sm font-medium text-foreground">Last Name</Label>
-                  <Input
-                    id="lastName"
-                    name="lastName"
-                    type="text"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <Label htmlFor="companyName" className="text-sm font-medium text-foreground">Company Name</Label>
-                <Input
-                  id="companyName"
-                  name="companyName"
-                  type="text"
-                  value={formData.companyName}
-                  onChange={handleInputChange}
-                  className="mt-1"
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <Label htmlFor="phone" className="text-sm font-medium text-foreground">Phone Number *</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="mt-1"
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="email" className="text-sm font-medium text-foreground">Email *</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="mt-1"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <Label htmlFor="message" className="text-sm font-medium text-foreground">Write your message</Label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  className="mt-1"
-                  rows={4}
-                />
-              </div>
-
-              {/* Consent checkboxes */}
-              <div className="space-y-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <Checkbox
-                    id="transactionalConsent"
-                    checked={formData.transactionalConsent}
-                    onCheckedChange={(checked) => handleCheckboxChange("transactionalConsent", checked as boolean)}
-                  />
-                  <Label htmlFor="transactionalConsent" className="text-xs text-muted-foreground leading-tight cursor-pointer">
-                    By checking this box, I consent to receive transactional messages related to my account, orders, or services I have requested. These messages may include appointment reminders, order confirmations, and account notifications among others. Message frequency may vary. Message & Data rates may apply. Reply HELP for help or STOP to opt-out.
-                  </Label>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Checkbox
-                    id="marketingConsent"
-                    checked={formData.marketingConsent}
-                    onCheckedChange={(checked) => handleCheckboxChange("marketingConsent", checked as boolean)}
-                  />
-                  <Label htmlFor="marketingConsent" className="text-xs text-muted-foreground leading-tight cursor-pointer">
-                    By checking this box, I consent to receive marketing and promotional messages, including special offers, discounts, new product updates among others. Message frequency may vary. Message & Data rates may apply. Reply HELP for help or STOP to opt-out.
-                  </Label>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full gradient-primary text-primary-foreground h-12 shadow-soft hover:opacity-90 transition-opacity text-lg"
-              >
-                Book Now
-              </Button>
-            </form>
-          ) : (
-            <div className="max-w-2xl mx-auto mb-8 p-8 rounded-2xl bg-mint-light/30 border border-mint/30 animate-scale-in text-center">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <CheckCircle className="w-8 h-8 text-mint" />
-                <span className="text-xl font-semibold text-foreground">Consultation Request Submitted!</span>
-              </div>
-              <p className="text-muted-foreground">
-                We'll be in touch within 24 hours with your personalized consultation.
+    <section id="cta" className="band-ink py-[var(--chapter-y)]">
+      <div ref={ref} className="shell">
+        <div className="grid gap-x-16 gap-y-16 lg:grid-cols-12">
+          {/* ---------- The brief ---------- */}
+          <div className="lg:col-span-5">
+            <div className="lg:sticky lg:top-28">
+              <p className="label text-on-ink-muted mb-8 rv">
+                Book AI Free Consultation
               </p>
+
+              <h2 className="display-lg text-ink rv-wipe mb-6">
+                Discover How Many Patients &amp; Clients You&rsquo;re Losing Right
+                Now
+              </h2>
+
+              <p className="prose-body rv mb-12">
+                In 3 minutes, see exactly where calls, bookings, and follow-ups
+                are slipping through the cracks.
+              </p>
+
+              <ul className="border-t border-ink mb-12">
+                {auditFeatures.map((feature) => (
+                  <li
+                    key={feature}
+                    className="rv flex items-baseline gap-5 py-4 border-b border-rule text-[0.9375rem] text-on-ink"
+                  >
+                    <Check
+                      className="w-4 h-4 text-coral-bright shrink-0 translate-y-0.5"
+                      strokeWidth={2}
+                      aria-hidden="true"
+                    />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="tel:+18884872171"
+                className="rv inline-flex items-center gap-3 group min-h-[44px] py-2"
+              >
+                <Phone
+                  className="w-4 h-4 text-on-ink-muted group-hover:text-coral-bright transition-colors"
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                />
+                <span className="figure text-xl text-on-ink link-rule">
+                  (888) 487-2171
+                </span>
+              </a>
             </div>
-          )}
-
-          <p className="text-sm text-muted-foreground text-center mb-8">
-            No obligation. No pressure. Keep the plan.
-          </p>
-
-          {/* Trust badges */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground mb-16">
-            {trustBadges.map((badge, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-primary" />
-                <span>{badge}</span>
-              </div>
-            ))}
           </div>
 
-          {/* Secondary CTA */}
-          <div className="text-center pt-12 border-t border-border">
-            <h3 className="text-2xl font-bold mb-4">
+          {/* ---------- The form ---------- */}
+          <div className="lg:col-span-7">
+            {!isSubmitted ? (
+              <form
+                onSubmit={handleSubmit}
+                className="rv bg-paper-raised border border-paper-raised p-[clamp(1.5rem,4vw,3rem)] text-ink"
+                noValidate
+              >
+                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-7 mb-7">
+                  <div>
+                    <label htmlFor="firstName" className="field-label">
+                      First Name <span className="text-coral-ink">*</span>
+                    </label>
+                    <input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      autoComplete="given-name"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      className="field"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="lastName" className="field-label">
+                      Last Name
+                    </label>
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      autoComplete="family-name"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      className="field"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-7">
+                  <label htmlFor="companyName" className="field-label">
+                    Company Name
+                  </label>
+                  <input
+                    id="companyName"
+                    name="companyName"
+                    type="text"
+                    autoComplete="organization"
+                    value={formData.companyName}
+                    onChange={handleInputChange}
+                    className="field"
+                  />
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-7 mb-7">
+                  <div>
+                    <label htmlFor="phone" className="field-label">
+                      Phone Number <span className="text-coral-ink">*</span>
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="field"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="field-label">
+                      Email <span className="text-coral-ink">*</span>
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="field"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-10">
+                  <label htmlFor="message" className="field-label">
+                    Write your message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    className="field"
+                    rows={4}
+                  />
+                </div>
+
+                {/* Consent — wording unchanged */}
+                <div className="space-y-6 mb-10 pt-8 border-t border-rule">
+                  <div className="flex items-start gap-4">
+                    <Checkbox
+                      id="transactionalConsent"
+                      checked={formData.transactionalConsent}
+                      onCheckedChange={(checked) =>
+                        handleCheckboxChange("transactionalConsent", checked as boolean)
+                      }
+                      className="mt-0.5 h-5 w-5 shrink-0 rounded-none border-stone-mid data-[state=checked]:bg-coral-ink data-[state=checked]:border-coral-ink data-[state=checked]:text-white relative before:absolute before:content-[''] before:-inset-[13px]"
+                    />
+                    <label
+                      htmlFor="transactionalConsent"
+                      className="text-xs text-stone-mid leading-relaxed cursor-pointer"
+                    >
+                      By checking this box, I consent to receive transactional messages related to my account, orders, or services I have requested. These messages may include appointment reminders, order confirmations, and account notifications among others. Message frequency may vary. Message &amp; Data rates may apply. Reply HELP for help or STOP to opt-out.
+                    </label>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <Checkbox
+                      id="marketingConsent"
+                      checked={formData.marketingConsent}
+                      onCheckedChange={(checked) =>
+                        handleCheckboxChange("marketingConsent", checked as boolean)
+                      }
+                      className="mt-0.5 h-5 w-5 shrink-0 rounded-none border-stone-mid data-[state=checked]:bg-coral-ink data-[state=checked]:border-coral-ink data-[state=checked]:text-white relative before:absolute before:content-[''] before:-inset-[13px]"
+                    />
+                    <label
+                      htmlFor="marketingConsent"
+                      className="text-xs text-stone-mid leading-relaxed cursor-pointer"
+                    >
+                      By checking this box, I consent to receive marketing and promotional messages, including special offers, discounts, new product updates among others. Message frequency may vary. Message &amp; Data rates may apply. Reply HELP for help or STOP to opt-out.
+                    </label>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-ink w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span>{isSubmitting ? "Sending…" : "Book Now"}</span>
+                  {!isSubmitting && (
+                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  )}
+                </button>
+
+                <p className="text-sm text-stone-mid mt-8">
+                  No obligation. No pressure. Keep the plan.
+                </p>
+              </form>
+            ) : (
+              <div
+                role="status"
+                aria-live="polite"
+                className="bg-paper-raised border border-paper-raised p-[clamp(1.5rem,4vw,3rem)] text-ink"
+              >
+                <div className="flex items-center gap-4 mb-5">
+                  <span className="w-8 h-8 shrink-0 bg-coral-ink flex items-center justify-center">
+                    <Check className="w-4 h-4 text-white" strokeWidth={2.5} aria-hidden="true" />
+                  </span>
+                  <h3 className="display-sm text-ink">
+                    Consultation Request Submitted!
+                  </h3>
+                </div>
+                <p className="prose-body">
+                  We&rsquo;ll be in touch within 24 hours with your personalized
+                  consultation.
+                </p>
+              </div>
+            )}
+
+            {/* Trust badges */}
+            <ul className="flex flex-wrap gap-x-10 gap-y-4 mt-10">
+              {trustBadges.map((badge) => (
+                <li key={badge} className="rv flex items-center gap-2.5">
+                  <span
+                    aria-hidden="true"
+                    className="w-[5px] h-[5px] rotate-45 bg-coral-bright"
+                  />
+                  <span className="label text-on-ink-muted">{badge}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* ---------- Closing line ---------- */}
+        <div className="mt-[clamp(5rem,11vw,9rem)] pt-14 border-t border-ink grid gap-x-16 gap-y-10 md:grid-cols-12 items-end">
+          <div className="md:col-span-8">
+            <h3 className="display-md text-on-ink mb-5 rv">
               Ready to Grow Your Medical, Dental or Law Practice?
             </h3>
-            <p className="text-muted-foreground mb-8">
-              Every day without AI is another day patients and clients book with a faster competitor.
+            <p className="prose-body rv">
+              Every day without AI is another day patients and clients book with
+              a faster competitor.
             </p>
-
-            <Button
+          </div>
+          <div className="md:col-span-4 md:text-right">
+            <button
               onClick={() => {
-                const ctaForm = document.querySelector('#cta form');
-                if (ctaForm) {
-                  ctaForm.scrollIntoView({ behavior: 'smooth' });
-                }
+                document
+                  .querySelector("#cta form")
+                  ?.scrollIntoView({ behavior: "smooth", block: "center" });
               }}
-              className="gradient-primary text-primary-foreground shadow-soft hover:opacity-90 transition-opacity h-12 px-8"
+              className="btn-ink rv"
             >
-              Book Now
-            </Button>
+              <span>Book Now</span>
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </button>
           </div>
         </div>
       </div>

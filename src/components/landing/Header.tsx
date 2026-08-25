@@ -1,113 +1,109 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import modoloLogo from "@/assets/modolo-logo.png";
+import { useScrolled } from "@/hooks/useMotion";
+
+const NAV = [
+  { label: "Solutions", id: "features" },
+  { label: "AI Employees", id: "employees" },
+  { label: "How It Works", id: "how-it-works" },
+  { label: "Results", id: "testimonials" },
+  { label: "Why MODOLO AI", id: "why-us" },
+];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const scrolled = useScrolled(32);
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setIsMenuOpen(false);
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-24 md:h-30">
-          {/* Logo */}
-          <div className="flex items-center">
-            <img src={modoloLogo} alt="MODOLO AI Logo" className="h-24 md:h-30 w-auto" />
-          </div>
+    <header
+      className={`fixed top-0 inset-x-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-500 ease-editorial ${
+        scrolled
+          ? "bg-paper/92 backdrop-blur-md border-rule"
+          : "bg-transparent border-transparent"
+      }`}
+    >
+      <div className="shell">
+        <div
+          className={`flex items-center justify-between gap-8 transition-[height] duration-500 ease-editorial ${
+            scrolled ? "h-[76px]" : "h-[100px]"
+          }`}
+        >
+          <a
+            href="#top"
+            onClick={(ev) => {
+              ev.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="flex items-center shrink-0"
+            aria-label="MODOLO AI — back to top"
+          >
+            <img
+              src={modoloLogo}
+              alt="MODOLO AI"
+              width={573}
+              height={401}
+              className={`w-auto transition-[height] duration-500 ease-editorial ${
+                scrolled ? "h-12" : "h-[60px]"
+              }`}
+            />
+          </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <button
-              onClick={() => scrollToSection("features")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Solutions
-            </button>
-            <button
-              onClick={() => scrollToSection("how-it-works")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              How It Works
-            </button>
-            <button
-              onClick={() => scrollToSection("testimonials")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Results
-            </button>
-            <button
-              onClick={() => scrollToSection("why-us")}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Why MODOLO AI
-            </button>
+          <nav className="hidden lg:flex items-center gap-9" aria-label="Main">
+            {NAV.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="label text-stone-mid hover:text-ink transition-colors duration-300 link-rule py-2"
+              >
+                {item.label}
+              </button>
+            ))}
           </nav>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <Button
-              onClick={() => scrollToSection("cta")}
-              className="gradient-primary text-primary-foreground shadow-soft hover:opacity-90 transition-opacity"
-            >
-              Book Now
-            </Button>
+          <div className="hidden lg:block shrink-0">
+            <button onClick={() => scrollToSection("cta")} className="btn-ink !py-3 !px-6">
+              <span>Book Now</span>
+            </button>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="lg:hidden w-11 h-11 -mr-2 flex items-center justify-center text-ink"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-nav"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
-            {isMenuOpen ? (
-              <X className="w-6 h-6 text-foreground" />
-            ) : (
-              <Menu className="w-6 h-6 text-foreground" />
-            )}
+            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border animate-fade-in">
-            <nav className="flex flex-col gap-4">
+          <div
+            id="mobile-nav"
+            className="lg:hidden pb-8 pt-2 border-t border-rule bg-paper"
+          >
+            <nav className="flex flex-col" aria-label="Main">
+              {NAV.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="label text-stone-mid hover:text-ink transition-colors text-left py-5 border-b border-rule min-h-[44px]"
+                >
+                  {item.label}
+                </button>
+              ))}
               <button
-                onClick={() => scrollToSection("features")}
-                className="text-muted-foreground hover:text-foreground transition-colors text-left py-2"
-              >
-                Solutions
-              </button>
-              <button
-                onClick={() => scrollToSection("how-it-works")}
-                className="text-muted-foreground hover:text-foreground transition-colors text-left py-2"
-              >
-                How It Works
-              </button>
-              <button
-                onClick={() => scrollToSection("testimonials")}
-                className="text-muted-foreground hover:text-foreground transition-colors text-left py-2"
-              >
-                Results
-              </button>
-              <button
-                onClick={() => scrollToSection("why-us")}
-                className="text-muted-foreground hover:text-foreground transition-colors text-left py-2"
-              >
-                Why MODOLO AI
-              </button>
-              <Button
                 onClick={() => scrollToSection("cta")}
-                className="gradient-primary text-primary-foreground shadow-soft w-full mt-2"
+                className="btn-ink mt-8 w-full justify-center"
               >
-                Book Now
-              </Button>
+                <span>Book Now</span>
+              </button>
             </nav>
           </div>
         )}

@@ -1,120 +1,116 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Building2, Users, Clock, Star } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { HeroTrace } from "./VitalTrace";
+import { EMPLOYEES } from "./AIEmployees";
+import { useReveal, useCountUp } from "@/hooks/useMotion";
 
-const Hero = () => {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+/** One trust figure, counted up on arrival. Labels are unchanged. */
+function Stat({
+  value,
+  decimals = 0,
+  suffix,
+  label,
+}: {
+  value: number;
+  decimals?: number;
+  suffix: string;
+  label: string;
+}) {
+  const { ref, value: shown } = useCountUp(value, { decimals, duration: 1800 });
+  const text = decimals > 0 ? shown.toFixed(decimals) : Math.round(shown).toString();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-hero pt-32 md:pt-36">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-72 h-72 bg-coral-light/30 rounded-full blur-3xl animate-float" />
-        <div
-          className="absolute bottom-1/4 -right-20 w-96 h-96 bg-lavender-light/30 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: "1s" }}
-        />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-peach-light/20 rounded-full blur-3xl" />
-      </div>
+    <div className="rv border-t border-ink pt-4">
+      <span ref={ref} className="figure block text-3xl md:text-[2.75rem] text-ink leading-none">
+        {text}
+        <span className="text-coral">{suffix}</span>
+      </span>
+      <span className="label text-stone-mid block mt-3 leading-[1.7]">{label}</span>
+    </div>
+  );
+}
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border shadow-sm mb-8 animate-fade-in">
-            <span className="text-sm font-medium text-muted-foreground">
-              <span className="font-bold text-primary">M</span>edical <span className="font-bold text-primary">O</span>ffice | <span className="font-bold text-primary">D</span>ental <span className="font-bold text-primary">O</span>ffice | <span className="font-bold text-primary">L</span>aw <span className="font-bold text-primary">O</span>ffice | AI
-            </span>
-          </div>
+const Hero = () => {
+  const ref = useReveal<HTMLDivElement>({ threshold: 0.05, stagger: 90 });
 
-          {/* Main Heading */}
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 animate-fade-in-up"
-            style={{ animationDelay: "0.1s" }}
-          >
-            Get More Patients & Clients
-          </h1>
+  const scrollToSection = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-          {/* Subtitle - same font style as heading */}
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-gradient mb-6 animate-fade-in-up"
-            style={{ animationDelay: "0.15s" }}
-          >
-            Operate Your Office More Effectively With Less Staff
-          </h2>
+  const seekEmployee = (i: number) =>
+    document
+      .getElementById(`employee-${EMPLOYEES[i].n}`)
+      ?.scrollIntoView({ behavior: "smooth" });
 
-          {/* Subheading */}
-          <p
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in-up"
-            style={{ animationDelay: "0.2s" }}
-          >
-            Instant engagement with prospects. We make sure every appointment booking is handled automatically.
-            Never miss a call. Never forget a follow-up. Never lose a patient or client to a faster competitor.
+  return (
+    <section id="top" className="relative bg-paper pt-[132px] md:pt-[168px]">
+      <div ref={ref} className="shell">
+        {/* Eyebrow — the MODOLO acronym, set as an instrument label */}
+        <div className="rv flex items-center gap-5 pb-[clamp(2.5rem,6vw,4.5rem)]">
+          {/* MODOLO reads out of the first letters: MO-DO-LO */}
+          <p className="label text-stone-mid">
+            <span className="text-coral-ink">M</span>edical{" "}
+            <span className="text-coral-ink">O</span>ffice
+            <span className="text-stone-mid mx-2" aria-hidden="true">/</span>
+            <span className="text-coral-ink">D</span>ental{" "}
+            <span className="text-coral-ink">O</span>ffice
+            <span className="text-stone-mid mx-2" aria-hidden="true">/</span>
+            <span className="text-coral-ink">L</span>aw{" "}
+            <span className="text-coral-ink">O</span>ffice
+            <span className="text-stone-mid mx-2" aria-hidden="true">/</span>AI
           </p>
+          <span className="rv-rule hidden sm:block flex-1 h-px bg-rule origin-left" />
+        </div>
 
-          {/* CTAs */}
-          <div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in-up"
-            style={{ animationDelay: "0.25s" }}
-          >
-            <Button
-              size="lg"
+        {/* The thesis */}
+        <h1 className="display-xl mb-[clamp(2rem,5vw,3.5rem)]">
+          <span className="rv-wipe text-ink">Plug the leaks.</span>
+          <span className="rv-wipe text-coral">Pour the fuel.</span>
+        </h1>
+
+        {/* The thesis, drawn: one rhythm carrying all seven leaks.
+            Each marker is a real button into its chapter. */}
+        <div className="rv mb-[clamp(3rem,7vw,4.5rem)]">
+          <HeroTrace onSeek={seekEmployee} labels={EMPLOYEES.map((e) => e.problem)} />
+        </div>
+
+        {/* The existing promise, kept word for word */}
+        <div className="grid gap-x-16 gap-y-10 md:grid-cols-12 pb-[clamp(4rem,9vw,7rem)]">
+          {/* Subordinate to the thesis above: the promise, then the method. */}
+          <div className="md:col-span-6">
+            <h2 className="display-sm !text-[clamp(1.5rem,2.6vw,2.125rem)] text-ink rv">
+              Get More Patients &amp; Clients
+            </h2>
+            <p className="display-sm !text-[clamp(1.5rem,2.6vw,2.125rem)] text-stone-mid rv mt-2">
+              Operate Your Office More Effectively With Less Staff
+            </p>
+          </div>
+
+          <div className="md:col-span-6 flex flex-col items-start gap-9">
+            <p className="prose-body rv">
+              Instant engagement with prospects. We make sure every appointment
+              booking is handled automatically. Never miss a call. Never forget a
+              follow-up. Never lose a patient or client to a faster competitor.
+            </p>
+            <button
               onClick={() => scrollToSection("cta")}
-              className="gradient-primary text-primary-foreground shadow-soft hover:opacity-90 transition-all text-lg px-8 py-6 h-auto"
+              className="btn-ink rv"
             >
-              Book Now
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </div>
-
-          {/* Stats */}
-          <div className="text-center mb-8 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-            <p className="text-sm font-medium text-muted-foreground mb-6">Trusted by Modern Medical, Dental & Law Offices</p>
-          </div>
-
-          <div
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto animate-fade-in-up"
-            style={{ animationDelay: "0.35s" }}
-          >
-            <div className="text-center p-4 rounded-xl bg-card/50 border border-border">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Building2 className="w-5 h-5 text-primary" />
-                <span className="text-2xl md:text-3xl font-bold text-foreground">150+</span>
-              </div>
-              <span className="text-xs text-muted-foreground">Medical, Dental & Law Offices</span>
-            </div>
-            <div className="text-center p-4 rounded-xl bg-card/50 border border-border">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Users className="w-5 h-5 text-accent" />
-                <span className="text-2xl md:text-3xl font-bold text-foreground">1.8M+</span>
-              </div>
-              <span className="text-xs text-muted-foreground">Patient Interactions</span>
-            </div>
-            <div className="text-center p-4 rounded-xl bg-card/50 border border-border">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Clock className="w-5 h-5 text-lavender" />
-                <span className="text-2xl md:text-3xl font-bold text-foreground">22+</span>
-              </div>
-              <span className="text-xs text-muted-foreground">Years Healthcare Tech</span>
-            </div>
-            <div className="text-center p-4 rounded-xl bg-card/50 border border-border">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Star className="w-5 h-5 text-coral" />
-                <span className="text-2xl md:text-3xl font-bold text-foreground">4.9★</span>
-              </div>
-              <span className="text-xs text-muted-foreground">Average Client Rating</span>
-            </div>
+              <span>Book Now</span>
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-2">
-          <div className="w-1.5 h-3 bg-primary rounded-full animate-pulse" />
+        {/* Trust ledger */}
+        <div className="pb-[var(--chapter-y)]">
+          <p className="label text-stone-mid mb-8 rv">
+            Trusted by Modern Medical, Dental &amp; Law Offices
+          </p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-10">
+            <Stat value={150} suffix="+" label="Medical, Dental & Law Offices" />
+            <Stat value={1.8} decimals={1} suffix="M+" label="Patient Interactions" />
+            <Stat value={22} suffix="+" label="Years Healthcare Tech" />
+            <Stat value={4.9} decimals={1} suffix="★" label="Average Client Rating" />
+          </div>
         </div>
       </div>
     </section>

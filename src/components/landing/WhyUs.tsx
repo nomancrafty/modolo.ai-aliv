@@ -1,4 +1,7 @@
-import { Check } from "lucide-react";
+import { useReveal } from "@/hooks/useMotion";
+
+/* Copy unchanged. Set as a numbered schedule of terms — the way a firm
+   states what it commits to — rather than a grid of ticked boxes. */
 
 const reasons = [
   "Built specifically for medical clinics, dental practices & law offices",
@@ -10,27 +13,35 @@ const reasons = [
 ];
 
 const WhyUs = () => {
-  return (
-    <section id="why-us" className="py-24 gradient-soft">
-      <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-12">
-            Why Medical, Dental & Law Offices Choose{" "}
-            <span className="text-gradient">MODOLO AI Technology</span>
-          </h2>
+  const ref = useReveal<HTMLDivElement>({ threshold: 0.12, stagger: 60 });
 
-          <div className="grid sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
-            {reasons.map((reason, index) => (
-              <div
-                key={index}
-                className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
-              >
-                <div className="w-6 h-6 rounded-full bg-mint-light/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="w-4 h-4 text-mint" />
-                </div>
-                <span className="text-foreground font-medium">{reason}</span>
-              </div>
-            ))}
+  return (
+    <section id="why-us" className="bg-paper py-[var(--chapter-y)]">
+      <div ref={ref} className="shell">
+        <div className="grid gap-x-16 gap-y-12 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <p className="label text-stone-mid mb-8 rv">Why MODOLO AI</p>
+            <h2 className="display-lg text-ink rv-wipe md:sticky md:top-32">
+              Why Medical, Dental &amp; Law Offices Choose MODOLO AI Technology
+            </h2>
+          </div>
+
+          <div className="md:col-span-7">
+            <ol className="border-t border-ink">
+              {reasons.map((reason, i) => (
+                <li
+                  key={reason}
+                  className="rv group flex items-baseline gap-6 md:gap-10 py-7 border-b border-rule"
+                >
+                  <span className="figure text-sm text-stone-mid shrink-0 transition-colors duration-500 group-hover:text-coral-ink">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-[1.0625rem] md:text-[1.125rem] leading-snug text-ink">
+                    {reason}
+                  </span>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </div>

@@ -1,86 +1,72 @@
-import { Star, Quote } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { useReveal } from "@/hooks/useMotion";
+
+/* Copy unchanged. Presented as attributed testimony rather than quote cards:
+   the client's words in the same serif voice used for the seven problems,
+   with the result set as a ledger figure beneath. */
 
 const testimonials = [
   {
     name: "SK",
     role: "Multi-Specialty Medical & Dental Clinic Owner",
-    avatar: "SK",
-    content: "The AI receptionist books more appointments and consultations than our old front desk system ever did.",
+    content:
+      "The AI receptionist books more appointments and consultations than our old front desk system ever did.",
     metric: "87% booking rate",
   },
   {
     name: "JL",
     role: "Regional Healthcare & Legal Services Group",
-    avatar: "JL",
     content: "Our Google reviews exploded and new patients and clients trust us instantly.",
     metric: "+1.1 star rating in 60 days",
   },
   {
     name: "DG",
     role: "Multi-location Medical, Dental & Law Office Network",
-    avatar: "DG",
     content: "Ad costs dropped while lead quality went up across all departments.",
     metric: "42% lower cost per qualified lead",
   },
 ];
 
 const Testimonials = () => {
+  const head = useReveal<HTMLDivElement>({ threshold: 0.2, stagger: 70 });
+  const body = useReveal<HTMLDivElement>({ threshold: 0.1, stagger: 90 });
+
   return (
-    <section id="testimonials" className="py-24 bg-background">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border mb-6">
-            <Star className="w-4 h-4 text-primary fill-primary" />
-            <span className="text-sm font-medium text-muted-foreground">
-              Real Results
-            </span>
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            Real Results From <span className="text-gradient">Medical, Dental & Law Offices</span>
+    <section id="testimonials" className="bg-paper-deep py-[var(--chapter-y)]">
+      <div className="shell">
+        <div ref={head} className="mb-[clamp(3.5rem,8vw,6rem)] max-w-4xl">
+          <p className="label text-stone-mid mb-8 rv">Real Results</p>
+          <h2 className="display-lg text-ink rv-wipe">
+            Real Results From Medical, Dental &amp; Law Offices
           </h2>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {testimonials.map((testimonial) => (
-            <Card
-              key={testimonial.name}
-              className="border-border hover:border-primary/30 transition-all duration-300 hover:shadow-soft bg-card"
+        <div ref={body} className="grid gap-x-12 gap-y-16 md:grid-cols-3">
+          {/* h-full + mt-auto keeps the result figures on one line across the
+              row, however long each quote runs. */}
+          {testimonials.map((t) => (
+            <figure
+              key={t.name}
+              className="rv border-t border-ink pt-8 flex flex-col h-full"
             >
-              <CardContent className="p-6">
-                {/* Quote icon */}
-                <Quote className="w-8 h-8 text-primary/20 mb-4" />
+              <blockquote>
+                <p className="voice text-ink text-[clamp(1.375rem,2.1vw,1.75rem)]">
+                  <span aria-hidden="true" className="text-stone-mid">“</span>
+                  {t.content}
+                  <span aria-hidden="true" className="text-stone-mid">”</span>
+                </p>
+              </blockquote>
 
-                {/* Content */}
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  "{testimonial.content}"
+              <div className="mt-auto pt-8">
+                <p className="figure text-coral-ink text-lg pt-6 border-t border-rule">
+                  {t.metric}
                 </p>
 
-                {/* Metric */}
-                <div className="inline-flex items-center px-3 py-1 rounded-full bg-mint-light/30 border border-mint/30 mb-4">
-                  <span className="text-sm font-semibold text-mint">{testimonial.metric}</span>
-                </div>
-
-                {/* Author */}
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center">
-                    <span className="text-sm font-semibold text-primary-foreground">
-                      {testimonial.avatar}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-card-foreground">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {testimonial.role}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                <figcaption className="mt-6 flex items-baseline gap-3">
+                  <span className="label text-ink">{t.name}</span>
+                  <span className="text-sm text-stone-mid leading-snug">{t.role}</span>
+                </figcaption>
+              </div>
+            </figure>
           ))}
         </div>
       </div>
