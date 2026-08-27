@@ -23,7 +23,6 @@ const Index = () => {
         {/* The thesis, the seven leaks it names, then the proof.
             The brand pulse rules the sections apart. */}
         <Hero />
-        <PulseDivider />
         <AIEmployees />
         <PulseDivider />
         <Features />

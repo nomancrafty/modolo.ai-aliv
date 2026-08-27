@@ -221,46 +221,17 @@
   .band-ink .bg-paper-raised .border-rule { border-color: hsl(var(--rule)); }
   .band-ink .bg-paper-raised .border-ink { border-color: hsl(var(--ink)); }
 
-  /* ---------- Reveal primitives ---------- */
+  /* ---------- Reveal primitives ----------
+     Motion is switched off site-wide at the client's request. The class
+     names stay on the markup so the animation can be restored by putting
+     the transitions back here, but every element now renders in its final
+     state with no entrance effect.
+  ----------------------------------------- */
 
-  .rv {
-    opacity: 0;
-    transform: translate3d(0, 18px, 0);
-    transition:
-      opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: var(--rv-delay, 0ms);
-    will-change: opacity, transform;
-  }
-  .rv.is-in { opacity: 1; transform: translate3d(0, 0, 0); }
-
-  .rv-wipe {
-    display: block;
-    clip-path: inset(0 0 110% 0);
-    transform: translate3d(0, 0.32em, 0);
-    transition:
-      clip-path 1.05s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 1.05s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: var(--rv-delay, 0ms);
-    will-change: clip-path, transform;
-  }
-  .rv-wipe.is-in { clip-path: inset(-0.25em 0 -0.25em 0); transform: translate3d(0, 0, 0); }
-
-  .rv-rule {
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: var(--rv-delay, 0ms);
-  }
-  .rv-rule.is-in { transform: scaleX(1); }
-
-  /* An SVG path that draws itself across — the brand pulse on each divider. */
-  .rv-draw {
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 1.7s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: var(--rv-delay, 0ms);
-  }
-  .rv-draw.is-in { stroke-dashoffset: 0; }
+  .rv, .rv.is-in { opacity: 1; transform: none; transition: none; }
+  .rv-wipe, .rv-wipe.is-in { display: block; clip-path: none; transform: none; transition: none; }
+  .rv-rule, .rv-rule.is-in { transform: none; transition: none; }
+  .rv-draw, .rv-draw.is-in { stroke-dashoffset: 0; transition: none; }
 
   /* ---------- Interactive ---------- */
 
@@ -364,52 +335,22 @@
 }
 
 /* ============================================================
-   VitalTrace drive layer
+   VitalTrace — drawn in full, always.
 
-   `--p` (0 -> 1) is written on the chapter root by useScrollProgress.
-   The problem trace draws across the first stretch of that progress, the
-   solution trace across the next, and the seal fills at the handover. The
-   split is front-loaded on purpose: the line has to already read as healed
-   by the time the solution copy is on screen, not after it.
-   Only stroke-dashoffset and opacity change — no layout, no reflow.
+   The scroll-driven draw and the hero's draw-on-load were removed with the
+   rest of the motion. The traces keep their geometry, so the problem half
+   still reads grey and degrading and the solution half coral and restored.
    ============================================================ */
 
-.trace-problem {
-  stroke-dashoffset: calc(1 - clamp(0, var(--p, 0) * 3.2, 1));
-}
-
-.trace-solution {
-  stroke-dashoffset: calc(1 - clamp(0, (var(--p, 0) - 0.3) * 3.4, 1));
-}
-
-.trace-seal {
-  opacity: clamp(0, (var(--p, 0) - 0.3) * 10, 1);
-}
-
-/* The footer trace draws as the reader arrives. */
-.trace-steady {
-  stroke-dashoffset: calc(1 - clamp(0, var(--p, 0) * 1.6, 1));
-}
-
-/* The hero trace draws itself once, on load, with the nodes landing after it. */
+.trace-problem,
+.trace-solution,
+.trace-steady,
 .hero-trace {
-  stroke-dashoffset: 1;
-  animation: draw-line 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+  stroke-dashoffset: 0;
 }
 
-.hero-node {
-  opacity: 0;
-  animation: node-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: calc(var(--i, 0) * 1.9s + 0.9s);
-}
-
-@keyframes draw-line {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes node-in {
-  to { opacity: 1; }
-}
+.trace-seal { opacity: 1; }
+.hero-node { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -420,15 +361,4 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-
-  .rv { opacity: 1; transform: none; }
-  .rv-wipe { clip-path: none; transform: none; }
-  .rv-rule { transform: scaleX(1); }
-  .rv-draw { stroke-dashoffset: 0; }
-  .trace-problem, .trace-solution, .trace-steady, .hero-trace {
-    stroke-dashoffset: 0;
-    animation: none;
-  }
-  .trace-seal { opacity: 1; }
-  .hero-node { opacity: 1; animation: none; }
 }

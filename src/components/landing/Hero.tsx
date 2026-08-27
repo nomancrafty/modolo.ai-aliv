@@ -35,10 +35,9 @@ const Hero = () => {
   const scrollToSection = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-  const seekEmployee = (i: number) =>
-    document
-      .getElementById(`employee-${EMPLOYEES[i].n}`)
-      ?.scrollIntoView({ behavior: "smooth" });
+  // The chapters are gone; every marker now lands on the wheel.
+  const seekEmployee = (_i: number) =>
+    document.getElementById("employees")?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section id="top" className="relative bg-paper pt-[132px] md:pt-[168px]">
@@ -69,7 +68,7 @@ const Hero = () => {
         {/* The thesis, drawn: one rhythm carrying all seven leaks.
             Each marker is a real button into its chapter. */}
         <div className="rv mb-[clamp(3rem,7vw,4.5rem)]">
-          <HeroTrace onSeek={seekEmployee} labels={EMPLOYEES.map((e) => e.problem)} />
+          <HeroTrace onSeek={seekEmployee} labels={EMPLOYEES.map((e) => e.name)} />
         </div>
 
         {/* The existing promise, kept word for word */}

@@ -22,18 +22,12 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-500 ease-editorial ${
-        scrolled
-          ? "bg-paper/92 backdrop-blur-md border-rule"
-          : "bg-transparent border-transparent"
+      className={`fixed top-0 inset-x-0 z-50 border-b ${
+        scrolled ? "bg-paper/92 backdrop-blur-md border-rule" : "bg-transparent border-transparent"
       }`}
     >
       <div className="shell">
-        <div
-          className={`flex items-center justify-between gap-8 transition-[height] duration-500 ease-editorial ${
-            scrolled ? "h-[76px]" : "h-[100px]"
-          }`}
-        >
+        <div className="flex items-center justify-between gap-8 h-[88px]">
           <a
             href="#top"
             onClick={(ev) => {
@@ -48,9 +42,7 @@ const Header = () => {
               alt="MODOLO AI"
               width={573}
               height={401}
-              className={`w-auto transition-[height] duration-500 ease-editorial ${
-                scrolled ? "h-12" : "h-[60px]"
-              }`}
+              className="w-auto h-[54px]"
             />
           </a>
 

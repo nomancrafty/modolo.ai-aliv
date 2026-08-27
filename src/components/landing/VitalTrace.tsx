@@ -1,18 +1,12 @@
 /**
- * VitalTrace — the site's signature element.
+ * VitalTrace — the pulse from the MODOLO mark, drawn across the page.
  *
- * The MODOLO mark is a slate M with a coral pulse running through it. That
- * pulse runs the length of the page: it degrades into a flatline at every
- * leak, and recovers into a stronger rhythm once the AI employee responsible
- * takes over.
- *
- * Geometry is generated rather than hand-drawn, so each of the seven chapters
- * gets its own failure signature instead of seven copies of one graphic.
+ * Two traces are in use: one in the hero carrying a marker per AI employee,
+ * and one closing the footer. Both are static; the scroll-driven drawing was
+ * removed along with the rest of the site's motion.
  */
 
 const MID = 60;
-const BOUNDARY = 430;
-const END = 1000;
 
 /** One beat starting at x, spanning ~34 units. */
 function beat(x: number, amp: number): string {
@@ -24,134 +18,10 @@ function beat(x: number, amp: number): string {
   ].join(" ");
 }
 
-export type TraceConfig = {
-  /** Beats before the failure. */
-  preBeats: number;
-  /** How hard each successive pre-beat fades — 1 = steady, <1 = dying. */
-  decay: number;
-  /** Beats after the AI employee takes over. */
-  postBeats: number;
-  /** Baseline amplitude. */
-  amp: number;
-};
-
-/** Seven signatures — one per employee, in narrative order. */
-export const TRACES: TraceConfig[] = [
-  { preBeats: 3, decay: 0.42, postBeats: 4, amp: 46 }, // 01 page never loaded — collapses fast
-  { preBeats: 2, decay: 0.8, postBeats: 4, amp: 38 },  // 02 forgotten — fades quietly
-  { preBeats: 3, decay: 0.55, postBeats: 3, amp: 42 }, // 03 trust lost
-  { preBeats: 2, decay: 0.35, postBeats: 4, amp: 44 }, // 04 no reply — drops off a cliff
-  { preBeats: 1, decay: 1, postBeats: 5, amp: 50 },    // 05 missed call — one ring, then nothing
-  { preBeats: 3, decay: 0.7, postBeats: 3, amp: 40 },  // 06 not convinced — peters out
-  { preBeats: 0, decay: 1, postBeats: 5, amp: 48 },    // 07 never discovered — flat from the start
-];
-
-function buildPaths(cfg: TraceConfig) {
-  // --- Problem: rhythm degrading into a flatline ---
-  let problem = `M 0 ${MID}`;
-  let x = 40;
-  for (let i = 0; i < cfg.preBeats; i++) {
-    const amp = cfg.amp * Math.pow(cfg.decay, i);
-    problem += ` L ${x} ${MID} ${beat(x, amp)}`;
-    x += 108;
-  }
-  problem += ` L ${BOUNDARY} ${MID}`;
-
-  // --- Solution: a pause, then rhythm returning stronger than before ---
-  let solution = `M ${BOUNDARY} ${MID}`;
-  let sx = BOUNDARY + 56;
-  const step = (END - 40 - sx) / Math.max(cfg.postBeats, 1);
-  for (let i = 0; i < cfg.postBeats; i++) {
-    solution += ` L ${sx} ${MID} ${beat(sx, cfg.amp * 1.12)}`;
-    sx += step;
-  }
-  solution += ` L ${END} ${MID}`;
-
-  return { problem, solution };
-}
-
 /**
- * The per-chapter trace. Drawing is driven entirely by the `--p` custom
- * property that `useScrollProgress` writes on the chapter root, so scrolling
- * only updates stroke-dashoffset — no React renders, no layout.
- */
-export function ChapterTrace({ index }: { index: number }) {
-  const cfg = TRACES[index % TRACES.length];
-  const { problem, solution } = buildPaths(cfg);
-
-  return (
-    <svg
-      viewBox={`0 0 ${END} 120`}
-      className="w-full h-[84px] md:h-[112px] overflow-visible"
-      fill="none"
-      aria-hidden="true"
-      focusable="false"
-      preserveAspectRatio="none"
-    >
-      {/* the flat reference the rhythm departs from */}
-      <line
-        x1="0"
-        y1={MID}
-        x2={END}
-        y2={MID}
-        stroke="hsl(var(--rule))"
-        strokeWidth="1"
-        vectorEffect="non-scaling-stroke"
-      />
-
-      {/* the leak: rhythm failing */}
-      <path
-        d={problem}
-        className="trace-problem"
-        stroke="hsl(var(--stone-soft))"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        pathLength={1}
-        strokeDasharray="1"
-        vectorEffect="non-scaling-stroke"
-      />
-
-      {/* the fix: rhythm restored, in brand coral */}
-      <path
-        d={solution}
-        className="trace-solution"
-        stroke="hsl(var(--coral))"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        pathLength={1}
-        strokeDasharray="1"
-        vectorEffect="non-scaling-stroke"
-      />
-
-      {/* the seal: hollow while leaking, filled once the employee takes over */}
-      <circle
-        cx={BOUNDARY}
-        cy={MID}
-        r="4.5"
-        fill="hsl(var(--paper))"
-        stroke="hsl(var(--stone-soft))"
-        strokeWidth="1.5"
-        vectorEffect="non-scaling-stroke"
-      />
-      <circle
-        cx={BOUNDARY}
-        cy={MID}
-        r="4.5"
-        className="trace-seal"
-        fill="hsl(var(--coral))"
-        stroke="hsl(var(--coral))"
-        strokeWidth="1.5"
-        vectorEffect="non-scaling-stroke"
-      />
-    </svg>
-  );
-}
-
-/**
- * The hero trace: one continuous rhythm carrying all seven leak points.
- * Each marker is a real button into its chapter, labelled 01–07.
+ * The hero trace: one rhythm carrying a marker per AI employee. The beat and
+ * marker count come from `labels`, so the trace always matches the number of
+ * employees rather than assuming a fixed count.
  */
 export function HeroTrace({
   onSeek,
@@ -162,12 +32,12 @@ export function HeroTrace({
 }) {
   const W = 1200;
   const mid = 60;
-  const gap = W / 7;
+  const count = labels.length;
+  const gap = W / count;
 
-  // A steady rhythm, interrupted by a dropout at each of the seven leaks.
   let d = `M 0 ${mid}`;
   const markers: number[] = [];
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < count; i++) {
     const base = i * gap;
     const beatX = base + gap * 0.14;
     const markerX = base + gap * 0.64;
@@ -184,7 +54,7 @@ export function HeroTrace({
         className="w-full h-[92px] md:h-[124px] overflow-visible"
         fill="none"
         role="img"
-        aria-label="Seven points where revenue leaks out of a practice, each handled by one AI employee."
+        aria-label={`${count} points where revenue leaks out of a practice, each handled by one AI employee.`}
         preserveAspectRatio="none"
       >
         <line
@@ -214,7 +84,6 @@ export function HeroTrace({
             cy={mid}
             r="4"
             className="hero-node"
-            style={{ ["--i" as string]: (i / 7).toFixed(3) }}
             fill="hsl(var(--paper))"
             stroke="hsl(var(--coral))"
             strokeWidth="1.75"
@@ -232,7 +101,7 @@ export function HeroTrace({
             onClick={() => onSeek(i)}
             style={{ left: `${(mx / W) * 100}%` }}
             className="group absolute top-1/2 -translate-x-1/2 w-11 h-11 flex items-end justify-center pb-0"
-            aria-label={`Leak ${String(i + 1).padStart(2, "0")}: ${labels[i]}`}
+            aria-label={`AI employee ${String(i + 1).padStart(2, "0")}: ${labels[i]}`}
           >
             <span className="figure text-[11px] text-stone-mid transition-colors duration-300 group-hover:text-coral-ink group-focus-visible:text-coral-ink">
               {String(i + 1).padStart(2, "0")}
@@ -244,10 +113,7 @@ export function HeroTrace({
   );
 }
 
-/**
- * The closing trace: after seven leaks are sealed, the practice reads steady.
- * Driven by `--p` from the footer so it draws as the reader arrives.
- */
+/** The closing trace: a steady rhythm under the footer. */
 export function SteadyTrace() {
   const W = 1200;
   const mid = 60;
