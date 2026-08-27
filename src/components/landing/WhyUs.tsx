@@ -20,18 +20,18 @@ const WhyUs = () => {
       <div ref={ref} className="shell">
         <div className="grid gap-x-16 gap-y-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <p className="eyebrow mb-8 rv">Why MODOLO AI</p>
+            <p className="label text-stone-mid mb-8 rv">Why MODOLO AI</p>
             <h2 className="display-lg text-ink rv-wipe md:sticky md:top-32">
               Why Medical, Dental &amp; Law Offices Choose MODOLO AI Technology
             </h2>
           </div>
 
           <div className="md:col-span-7">
-            <ol className="grid gap-3">
+            <ol className="border-t border-ink">
               {reasons.map((reason, i) => (
                 <li
                   key={reason}
-                  className="rv group panel flex items-baseline gap-6 md:gap-10 px-6 py-5 transition-colors duration-300 hover:border-coral/40"
+                  className="rv group flex items-baseline gap-6 md:gap-10 py-7 border-b border-rule"
                 >
                   <span className="figure text-sm text-stone-mid shrink-0 transition-colors duration-500 group-hover:text-coral-ink">
                     {String(i + 1).padStart(2, "0")}

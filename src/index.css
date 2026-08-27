@@ -5,40 +5,36 @@
 /* ============================================================
    MODOLO.AI — Design System
 
-   Design direction taken from the AMDEL AI reference: deep indigo-black
-   ground, warm off-white type, one warm accent, hairline-bordered panels,
-   dash-prefixed eyebrow labels, huge display headlines, and ambient
-   flowing line art.
+   MODOLO is a marketing agency. Medical, dental and law is who it
+   sells to, not what it is — so the visual language comes from the
+   agency's world (revenue, throughput, capture), never the clinic's.
 
-   The accent stays MODOLO coral rather than the reference amber, because
-   the logo is coral on slate and amber fights it.
+   Warm stone ground, warm ink, one coral taken from the brand mark.
    ============================================================ */
 
 @layer base {
   :root {
-    /* --- Grounds: indigo-black, lifting in three steps --- */
-    --paper: 240 60% 5%;          /* #050513  page ground */
-    --paper-deep: 240 47% 8%;     /* #0A0A1C  alternate band */
-    --paper-raised: 240 40% 12%;  /* #12122A  lifted panel */
+    /* --- Grounds: warm stone. Not clinical white, not cream. --- */
+    --paper: 60 11% 93%;          /* #EFEFEB  page ground */
+    --paper-deep: 60 10% 88%;     /* #E3E3DD  inset bands */
+    --paper-raised: 0 0% 100%;    /* #FFFFFF  panels that must sit forward */
 
-    /* --- Type on dark --- */
-    --ink: 36 21% 96%;            /* #F7F5F2  primary, 18.60:1 */
-    --stone: 250 10% 80%;         /* #C9C7D2  strong secondary, 12.13:1 */
-    --stone-mid: 249 8% 68%;      /* #A9A8B4  muted body, 8.62:1 */
-    --stone-soft: 249 6% 46%;     /* #6E6D7C  graphics + large only, 3.99:1 */
-    --rule: 240 26% 15%;          /* #1E1E32  hairlines */
-    --rule-soft: 240 20% 22%;     /* brighter hairline for panel edges */
+    /* --- Ink: warm near-black, and the dark band it makes --- */
+    --ink: 80 6% 10%;             /* #191A17  15.16:1 on paper */
+    --stone: 60 8% 26%;           /* #47473F  strong secondary */
+    --stone-mid: 60 7% 37%;       /* #656558  body secondary, 5.12 paper / 4.58 deep */
+    --stone-soft: 60 6% 51%;      /* #8A8A7C  graphics + large text only */
+    --rule: 60 9% 82%;            /* #D6D6CE  hairlines */
 
-    /* --- Coral. On dark, one grade does every job (7.85:1). --- */
-    --coral: 16 100% 65%;         /* #FF7A4D  accent, text + graphics */
-    --coral-ink: 16 100% 68%;     /* #FF8A5C  accent as text, 8.71:1 */
-    --coral-bright: 13 85% 61%;   /* #F06C48  logo-true */
-    --coral-deep: 12 74% 53%;     /* button gradient foot; keeps dark type >=4.5:1 at the button's bottom edge */
+    /* --- On the ink band --- */
+    --on-ink: 60 11% 93%;         /* 15.16:1 */
+    --on-ink-muted: 48 5% 59%;    /* #9C9A92  6.20:1 */
+    --rule-ink: 75 6% 22%;
 
-    /* --- Kept for components that still reference them --- */
-    --on-ink: 36 21% 96%;
-    --on-ink-muted: 249 8% 68%;
-    --rule-ink: 240 26% 15%;
+    /* --- Coral, from the mark. One accent, three grades. --- */
+    --coral: 14 84% 49%;          /* #E64514  graphics; 3.49 paper / 3.12 deep */
+    --coral-ink: 14 80% 39%;      /* #B33914  text; 5.19 paper / 4.64 deep / 5.98 white */
+    --coral-bright: 13 85% 61%;   /* #F06C48  logo-true; 5.78 on ink */
 
     /* --- shadcn bridge --- */
     --background: var(--paper);
@@ -47,53 +43,55 @@
     --card-foreground: var(--ink);
     --popover: var(--paper-raised);
     --popover-foreground: var(--ink);
-    --primary: var(--coral);
-    --primary-foreground: 240 60% 5%;
+    --primary: var(--coral-ink);
+    --primary-foreground: 0 0% 100%;
     --secondary: var(--paper-deep);
-    --secondary-foreground: var(--ink);
+    --secondary-foreground: var(--stone);
     --muted: var(--paper-deep);
     --muted-foreground: var(--stone-mid);
-    --accent: var(--coral);
-    --accent-foreground: 240 60% 5%;
-    --destructive: 4 74% 52%;
+    --accent: var(--coral-ink);
+    --accent-foreground: 0 0% 100%;
+    --destructive: 4 74% 44%;
     --destructive-foreground: 0 0% 100%;
     --border: var(--rule);
     --input: var(--rule);
-    --ring: var(--coral);
-    --radius: 0.75rem;
+    --ring: var(--coral-ink);
+    --radius: 0.125rem;
 
     /* --- Rhythm --- */
     --measure: 62ch;
     --gutter: clamp(1.25rem, 4vw, 4rem);
-    --chapter-y: clamp(4.5rem, 9vh, 7.5rem);
+    --chapter-y: clamp(4rem, 8vh, 6.5rem);
     --chapter-gap: clamp(2.75rem, 5vw, 4.5rem);
   }
 }
 
 @layer base {
-  * { border-color: hsl(var(--rule)); }
+  * {
+    border-color: hsl(var(--rule));
+  }
 
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
-    background-color: hsl(var(--paper));
   }
 
   body {
     background-color: hsl(var(--paper));
     color: hsl(var(--ink));
-    font-family: "Archivo", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-family: "Newsreader", ui-serif, Georgia, serif;
+    font-optical-sizing: auto;
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.03em;
-    line-height: 1.04;
+    font-weight: 600;
+    letter-spacing: -0.028em;
+    line-height: 1.02;
     text-wrap: balance;
     color: inherit;
   }
@@ -101,61 +99,67 @@
   p { text-wrap: pretty; }
 
   ::selection {
-    background: hsl(var(--coral) / 0.3);
+    background: hsl(var(--coral) / 0.26);
     color: hsl(var(--ink));
   }
 
   :focus-visible {
-    outline: 2px solid hsl(var(--coral));
+    outline: 2px solid hsl(var(--coral-ink));
     outline-offset: 3px;
-    border-radius: 4px;
+    border-radius: 1px;
   }
 
   .tnum { font-variant-numeric: tabular-nums; }
 }
 
 @layer components {
-  /* ---------- Typographic roles ---------- */
+  /* ---------- Typographic roles ----------
+     display = Archivo, the agency speaking
+     voice   = Newsreader Italic, a customer speaking
+     label   = IBM Plex Mono, the ledger reading out
+  ------------------------------------------ */
 
   .display-xl {
     font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-    font-variation-settings: "wdth" 100;
-    font-weight: 500;
-    letter-spacing: -0.038em;
+    font-variation-settings: "wdth" 112;
+    font-weight: 600;
+    letter-spacing: -0.035em;
     line-height: 0.98;
-    font-size: clamp(2.75rem, 7.6vw, 6.5rem);
+    font-size: clamp(2.75rem, 8.5vw, 7.25rem);
   }
 
   .display-lg {
     font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.034em;
-    line-height: 1.02;
-    font-size: clamp(2.25rem, 5.2vw, 4rem);
+    font-variation-settings: "wdth" 112;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    font-size: clamp(2.25rem, 5.5vw, 4.25rem);
   }
 
   .display-md {
     font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-    font-weight: 500;
+    font-variation-settings: "wdth" 110;
+    font-weight: 600;
     letter-spacing: -0.028em;
-    line-height: 1.08;
-    font-size: clamp(1.75rem, 3.2vw, 2.625rem);
+    line-height: 1.04;
+    font-size: clamp(1.75rem, 3.4vw, 2.75rem);
   }
 
   .display-sm {
     font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.018em;
-    line-height: 1.2;
+    font-variation-settings: "wdth" 105;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
     font-size: clamp(1.125rem, 1.6vw, 1.375rem);
   }
 
-  /* The one serif on the page: a customer speaking, in the seven chapters. */
   .voice {
     font-family: "Newsreader", ui-serif, Georgia, serif;
     font-style: italic;
     font-weight: 300;
-    line-height: 1.1;
+    line-height: 1.08;
     letter-spacing: -0.02em;
     text-wrap: balance;
   }
@@ -164,7 +168,7 @@
     font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
     font-size: 0.6875rem;
     font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     line-height: 1;
   }
@@ -177,35 +181,12 @@
   }
 
   .prose-body {
-    font-size: clamp(1rem, 1.05vw, 1.0625rem);
-    line-height: 1.7;
+    font-family: "Newsreader", ui-serif, Georgia, serif;
+    font-size: clamp(1.0625rem, 1.15vw, 1.1875rem);
+    line-height: 1.68;
     color: hsl(var(--stone-mid));
     max-width: var(--measure);
   }
-
-  /* ---------- The eyebrow device: a rule, then a spaced label ---------- */
-
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.875rem;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    line-height: 1;
-    color: hsl(var(--coral));
-  }
-  .eyebrow::before {
-    content: "";
-    width: 2.5rem;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.7;
-    flex: none;
-  }
-  .eyebrow-muted { color: hsl(var(--stone-mid)); }
 
   /* ---------- Structure ---------- */
 
@@ -216,33 +197,35 @@
     padding-inline: var(--gutter);
   }
 
-  /* Hairline panel — the reference's core container. */
-  .panel {
-    background: hsl(var(--paper-raised) / 0.5);
-    border: 1px solid hsl(var(--rule-soft));
-    border-radius: var(--radius);
-  }
-
-  /* An alternate band, lifted a step off the page ground. */
-  .band-deep {
-    background: hsl(var(--paper-deep));
-    border-block: 1px solid hsl(var(--rule));
-  }
-
-  /* Kept name so existing markup keeps working; on a dark page the closing
-     section lifts rather than darkens. */
+  /* The one dark moment on the page. Swap this class for bg-paper-deep
+     to return the section to the light ground. */
   .band-ink {
-    background: hsl(var(--paper-deep));
-    color: hsl(var(--ink));
-    border-block: 1px solid hsl(var(--rule));
+    background: hsl(var(--ink));
+    color: hsl(var(--on-ink));
   }
-  .band-ink .prose-body { color: hsl(var(--stone-mid)); }
+  .band-ink h1, .band-ink h2, .band-ink h3, .band-ink h4 { color: hsl(var(--on-ink)); }
+  .band-ink .prose-body { color: hsl(var(--on-ink-muted)); }
+  .band-ink .text-coral-ink { color: hsl(var(--coral-bright)); }
+  .band-ink .border-rule { border-color: hsl(var(--rule-ink)); }
+  .band-ink .border-ink { border-color: hsl(var(--rule-ink)); }
+
+  /* A raised panel inside the dark band is still a light surface — undo the
+     band's overrides inside it, or its text lands on the wrong ground. */
+  .band-ink .bg-paper-raised,
+  .band-ink .bg-paper-raised h1,
+  .band-ink .bg-paper-raised h2,
+  .band-ink .bg-paper-raised h3,
+  .band-ink .bg-paper-raised h4 { color: hsl(var(--ink)); }
+  .band-ink .bg-paper-raised .prose-body { color: hsl(var(--stone-mid)); }
+  .band-ink .bg-paper-raised .text-coral-ink { color: hsl(var(--coral-ink)); }
+  .band-ink .bg-paper-raised .border-rule { border-color: hsl(var(--rule)); }
+  .band-ink .bg-paper-raised .border-ink { border-color: hsl(var(--ink)); }
 
   /* ---------- Reveal primitives ---------- */
 
   .rv {
     opacity: 0;
-    transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 18px, 0);
     transition:
       opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
@@ -271,6 +254,7 @@
   }
   .rv-rule.is-in { transform: scaleX(1); }
 
+  /* An SVG path that draws itself across — the brand pulse on each divider. */
   .rv-draw {
     stroke-dashoffset: 1;
     transition: stroke-dashoffset 1.7s cubic-bezier(0.22, 1, 0.36, 1);
@@ -278,91 +262,59 @@
   }
   .rv-draw.is-in { stroke-dashoffset: 0; }
 
-  /* ---------- Buttons ---------- */
+  /* ---------- Interactive ---------- */
 
-  /* Primary: warm gradient fill, dark type, rounded — the reference's CTA. */
-  .btn-accent {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.625rem;
-    min-height: 48px;
-    padding: 0.875rem 1.625rem;
-    border-radius: 10px;
-    border: 1px solid hsl(var(--coral));
-    background: linear-gradient(180deg, hsl(var(--coral)) 0%, hsl(var(--coral-deep)) 100%);
-    color: hsl(var(--paper));
-    font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    cursor: pointer;
-    transition: filter 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.3s ease;
-    box-shadow: 0 8px 30px -12px hsl(var(--coral) / 0.55);
-  }
-  .btn-accent:hover, .btn-accent:focus-visible {
-    filter: brightness(1.07);
-    transform: translateY(-1px);
-    box-shadow: 0 14px 38px -12px hsl(var(--coral) / 0.7);
-  }
-
-  /* Secondary: outlined, accent type. */
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    min-height: 44px;
-    padding: 0.6875rem 1.25rem;
-    border-radius: 10px;
-    border: 1px solid hsl(var(--coral) / 0.55);
-    background: transparent;
-    color: hsl(var(--coral-ink));
-    font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-  }
-  .btn-outline:hover, .btn-outline:focus-visible {
-    background: hsl(var(--coral) / 0.1);
-    border-color: hsl(var(--coral));
-  }
-
-  /* Quiet: bordered neutral, for tertiary actions. */
   .btn-ink {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.625rem;
-    min-height: 48px;
-    padding: 0.875rem 1.625rem;
-    border-radius: 10px;
-    border: 1px solid hsl(var(--coral));
-    background: linear-gradient(180deg, hsl(var(--coral)) 0%, hsl(var(--coral-deep)) 100%);
+    gap: 0.75rem;
+    padding: 1.0625rem 1.75rem;
+    min-height: 44px;
+    background: hsl(var(--ink));
     color: hsl(var(--paper));
-    font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 600;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid hsl(var(--ink));
+    position: relative;
+    overflow: hidden;
+    transition: color 0.4s ease, border-color 0.4s ease;
     cursor: pointer;
-    transition: filter 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    box-shadow: 0 8px 30px -12px hsl(var(--coral) / 0.55);
   }
-  .btn-ink:hover, .btn-ink:focus-visible {
-    filter: brightness(1.07);
-    transform: translateY(-1px);
+  .btn-ink::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: hsl(var(--coral-ink));
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 0;
   }
+  .btn-ink > * { position: relative; z-index: 1; }
+  .btn-ink:hover::after, .btn-ink:focus-visible::after { transform: scaleX(1); }
+  .btn-ink:hover, .btn-ink:focus-visible { border-color: hsl(var(--coral-ink)); }
 
-  .link-rule { position: relative; transition: color 0.3s ease; }
+  /* On the dark band the button inverts: coral ground, ink type. */
+  .band-ink .btn-ink {
+    background: hsl(var(--coral-bright));
+    border-color: hsl(var(--coral-bright));
+    color: hsl(var(--ink));
+  }
+  .band-ink .btn-ink::after { background: hsl(var(--on-ink)); }
+  .band-ink .btn-ink:hover, .band-ink .btn-ink:focus-visible { border-color: hsl(var(--on-ink)); }
+
+  .link-rule { position: relative; transition: color 0.35s ease; }
   .link-rule::after {
     content: "";
     position: absolute;
     left: 0;
-    bottom: -4px;
+    bottom: -3px;
     height: 1px;
     width: 100%;
-    background: hsl(var(--coral));
+    background: hsl(var(--coral-ink));
     transform: scaleX(0);
     transform-origin: left center;
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -375,23 +327,23 @@
     width: 100%;
     min-height: 48px;
     display: block;
-    background: hsl(var(--paper) / 0.6);
-    border: 1px solid hsl(var(--rule-soft));
-    border-radius: 8px;
-    padding: 0.75rem 0.875rem;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid hsl(var(--rule));
+    border-radius: 0;
+    padding: 0.75rem 0;
     color: hsl(var(--ink));
-    font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
+    font-family: "Newsreader", ui-serif, Georgia, serif;
     font-size: 1rem;
     line-height: 1.5;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
+    transition: border-color 0.35s ease;
   }
-  .field::placeholder { color: hsl(var(--stone-soft)); }
-  .field:hover { border-color: hsl(var(--stone-soft)); }
+  .field::placeholder { color: hsl(var(--stone-mid)); }
+  .field:hover { border-bottom-color: hsl(var(--stone-soft)); }
   .field:focus, .field:focus-visible {
-    outline: 2px solid hsl(var(--coral));
-    outline-offset: 2px;
-    border-color: hsl(var(--coral));
-    background: hsl(var(--paper));
+    outline: 2px solid hsl(var(--coral-ink));
+    outline-offset: 4px;
+    border-bottom-color: hsl(var(--coral-ink));
   }
   textarea.field { resize: vertical; min-height: 7rem; }
 
@@ -403,17 +355,23 @@
     text-transform: uppercase;
     color: hsl(var(--stone-mid));
     display: block;
-    margin-bottom: 0.5rem;
   }
 }
 
 @layer utilities {
   .text-coral-ink { color: hsl(var(--coral-ink)); }
-  .bg-ink { background-color: hsl(var(--paper-raised)); }
+  .bg-ink { background-color: hsl(var(--ink)); }
 }
 
 /* ============================================================
    VitalTrace drive layer
+
+   `--p` (0 -> 1) is written on the chapter root by useScrollProgress.
+   The problem trace draws across the first stretch of that progress, the
+   solution trace across the next, and the seal fills at the handover. The
+   split is front-loaded on purpose: the line has to already read as healed
+   by the time the solution copy is on screen, not after it.
+   Only stroke-dashoffset and opacity change — no layout, no reflow.
    ============================================================ */
 
 .trace-problem {
@@ -428,10 +386,12 @@
   opacity: clamp(0, (var(--p, 0) - 0.3) * 10, 1);
 }
 
+/* The footer trace draws as the reader arrives. */
 .trace-steady {
   stroke-dashoffset: calc(1 - clamp(0, var(--p, 0) * 1.6, 1));
 }
 
+/* The hero trace draws itself once, on load, with the nodes landing after it. */
 .hero-trace {
   stroke-dashoffset: 1;
   animation: draw-line 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
@@ -443,16 +403,13 @@
   animation-delay: calc(var(--i, 0) * 1.9s + 0.9s);
 }
 
-@keyframes draw-line { to { stroke-dashoffset: 0; } }
-@keyframes node-in { to { opacity: 1; } }
-
-/* Ambient line art drifts very slowly; it must never read as motion. */
-@keyframes drift {
-  0%   { transform: translate3d(0, 0, 0); }
-  50%  { transform: translate3d(-1.5%, 1.2%, 0); }
-  100% { transform: translate3d(0, 0, 0); }
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
 }
-.ambient-drift { animation: drift 26s ease-in-out infinite; }
+
+@keyframes node-in {
+  to { opacity: 1; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -474,5 +431,4 @@
   }
   .trace-seal { opacity: 1; }
   .hero-node { opacity: 1; animation: none; }
-  .ambient-drift { animation: none; }
 }

@@ -107,7 +107,9 @@ const CTA = () => {
           {/* ---------- The brief ---------- */}
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-28">
-              <p className="eyebrow mb-8 rv">Book AI Free Consultation</p>
+              <p className="label text-on-ink-muted mb-8 rv">
+                Book AI Free Consultation
+              </p>
 
               <h2 className="display-lg text-ink rv-wipe mb-6">
                 Discover How Many Patients &amp; Clients You&rsquo;re Losing Right
@@ -156,7 +158,7 @@ const CTA = () => {
             {!isSubmitted ? (
               <form
                 onSubmit={handleSubmit}
-                className="rv panel p-[clamp(1.5rem,4vw,3rem)]"
+                className="rv bg-paper-raised border border-paper-raised p-[clamp(1.5rem,4vw,3rem)] text-ink"
                 noValidate
               >
                 <div className="grid sm:grid-cols-2 gap-x-8 gap-y-7 mb-7">
@@ -311,7 +313,7 @@ const CTA = () => {
               <div
                 role="status"
                 aria-live="polite"
-                className="panel p-[clamp(1.5rem,4vw,3rem)]"
+                className="bg-paper-raised border border-paper-raised p-[clamp(1.5rem,4vw,3rem)] text-ink"
               >
                 <div className="flex items-center gap-4 mb-5">
                   <span className="w-8 h-8 shrink-0 bg-coral-ink flex items-center justify-center">

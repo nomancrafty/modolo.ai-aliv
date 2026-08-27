@@ -239,7 +239,7 @@ function Chapter({ e, index }: { e: Employee; index: number }) {
         <div
           className={`max-w-3xl ${flip ? "md:ml-auto md:text-right" : ""}`}
         >
-          <p className="eyebrow eyebrow-muted mb-6 rv">The Problem</p>
+          <p className="label text-stone-mid mb-6 rv">The Problem</p>
           <blockquote className="rv-wipe">
             <p className="voice text-ink text-[clamp(2rem,6.2vw,4.5rem)]">
               <span aria-hidden="true" className="text-stone-mid">“</span>
@@ -257,7 +257,7 @@ function Chapter({ e, index }: { e: Employee; index: number }) {
         {/* --- Beat two: the solution, in the system's voice --- */}
         <div className="grid gap-x-16 gap-y-12 md:grid-cols-12">
           <div className="md:col-span-7">
-            <p className="eyebrow mb-6 rv">The Solution</p>
+            <p className="label text-coral-ink mb-6 rv">The Solution</p>
             <h3 className="display-md text-ink mb-8 rv text-balance">
               {e.solution}
             </h3>
@@ -307,7 +307,9 @@ const AIEmployees = () => {
       <div ref={introRef} className="shell pb-[clamp(4rem,10vw,8rem)]">
         <div className="grid gap-x-16 gap-y-8 md:grid-cols-12 items-end">
           <div className="md:col-span-7">
-            <p className="eyebrow mb-8 rv">Seven leaks · Seven employees</p>
+            <p className="label text-stone-mid mb-8 rv">
+              Seven leaks · Seven employees
+            </p>
             <h2 id="employees-heading" className="display-lg text-ink rv-wipe">
               Revenue doesn't walk out. It leaks.
             </h2>
