@@ -1,7 +1,10 @@
 import { Twitter, Linkedin, Facebook } from "lucide-react";
-import modoloLogo from "@/assets/modolo-logo.png";
 import { SteadyTrace } from "./VitalTrace";
 import { useReveal, useScrollProgress } from "@/hooks/useMotion";
+
+// New MODOLO AI logo, served from /public (intrinsic 2546×1664). `h-14 w-auto`
+// renders it and preserves aspect ratio; the attrs carry the intrinsic ratio.
+const LOGO_SRC = "/favicon.png";
 
 /* Copy unchanged. The trace across the top is the narrative's last beat:
    every leak sealed, the practice reading steady. */
@@ -12,15 +15,17 @@ const Footer = () => {
   const flowRef = useScrollProgress<HTMLDivElement>("--p", { start: 0.95, end: 0.55 });
 
   const links = {
+    // The old #features section was removed; these keep their wording and now
+    // point at the seven-employee solutions section (#employees).
     solutions: [
-      { label: "AI Voice Receptionist", href: "#features" },
-      { label: "Calendar Management", href: "#features" },
-      { label: "Review Management", href: "#features" },
-      { label: "SEO & Advertising", href: "#features" },
+      { label: "AI Voice Receptionist", href: "#employees" },
+      { label: "Calendar Management", href: "#employees" },
+      { label: "Review Management", href: "#employees" },
+      { label: "SEO & Advertising", href: "#employees" },
     ],
+    // "How It Works" removed with its section; no confirmed destination yet.
     company: [
       { label: "About Us", href: "#" },
-      { label: "How It Works", href: "#how-it-works" },
       { label: "Results", href: "#testimonials" },
       { label: "Contact", href: "#cta" },
     ],
@@ -48,10 +53,10 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-5">
             <img
-              src={modoloLogo}
+              src={LOGO_SRC}
               alt="MODOLO AI"
-              width={573}
-              height={401}
+              width={2546}
+              height={1664}
               className="h-14 w-auto mb-7"
             />
             <p className="text-[1.0625rem] text-ink mb-1.5">

@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { HeroTrace } from "./VitalTrace";
-import { EMPLOYEES } from "./AIEmployees";
+import { EMPLOYEES } from "./heroTrace";
 import { useReveal, useCountUp } from "@/hooks/useMotion";
 
 /** One trust figure, counted up on arrival. Labels are unchanged. */

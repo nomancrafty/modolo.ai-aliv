@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import modoloLogo from "@/assets/modolo-logo.png";
 import { useScrolled } from "@/hooks/useMotion";
 
+// New MODOLO AI logo, served from /public. Intrinsic size 2546×1664 — the
+// width/height attrs below carry that ratio so the browser reserves the right
+// box; `w-auto h-[54px]` drives the rendered size and preserves aspect ratio.
+const LOGO_SRC = "/favicon.png";
+
+// "MODOLO AI Solutions" points at the seven-employee section, which is the
+// replacement for the removed Demand Generation solutions block.
+// "How It Works" is intentionally NOT present: its section (#how-it-works)
+// was removed and no destination has been confirmed yet — awaiting the client.
 const NAV = [
-  { label: "Solutions", id: "features" },
-  { label: "AI Employees", id: "employees" },
-  { label: "How It Works", id: "how-it-works" },
+  { label: "MODOLO AI Solutions", id: "employees" },
   { label: "Results", id: "testimonials" },
   { label: "Why MODOLO AI", id: "why-us" },
 ];
@@ -38,10 +44,10 @@ const Header = () => {
             aria-label="MODOLO AI — back to top"
           >
             <img
-              src={modoloLogo}
+              src={LOGO_SRC}
               alt="MODOLO AI"
-              width={573}
-              height={401}
+              width={2546}
+              height={1664}
               className="w-auto h-[54px]"
             />
           </a>
