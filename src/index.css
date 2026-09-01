@@ -222,16 +222,58 @@
   .band-ink .bg-paper-raised .border-ink { border-color: hsl(var(--ink)); }
 
   /* ---------- Reveal primitives ----------
-     Motion is switched off site-wide at the client's request. The class
-     names stay on the markup so the animation can be restored by putting
-     the transitions back here, but every element now renders in its final
-     state with no entrance effect.
+     Soft, restrained entrances: a short fade-up as each section first enters
+     the viewport, staggered in DOM order via `--rv-delay` (set in JS). Only
+     opacity and transform move, so nothing reflows and clicks are never
+     blocked.
+
+     The hidden START state is gated on `.reveal-ready` (added to <html> in
+     main.tsx once JS is live). If this JS never runs, content stays visible —
+     the site never hides itself behind an animation that failed to trigger.
   ----------------------------------------- */
 
-  .rv, .rv.is-in { opacity: 1; transform: none; transition: none; }
-  .rv-wipe, .rv-wipe.is-in { display: block; clip-path: none; transform: none; transition: none; }
-  .rv-rule, .rv-rule.is-in { transform: none; transition: none; }
-  .rv-draw, .rv-draw.is-in { stroke-dashoffset: 0; transition: none; }
+  .rv, .rv-wipe, .rv-rule, .rv-draw { transition: none; }
+
+  .reveal-ready .rv {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.64s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),
+      transform 0.64s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));
+    transition-delay: var(--rv-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal-ready .rv-wipe {
+    display: block;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),
+      transform 0.7s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));
+    transition-delay: var(--rv-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal-ready .rv-rule {
+    transform: scaleX(0);
+    transition: transform 0.72s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));
+    transition-delay: var(--rv-delay, 0ms);
+  }
+
+  .reveal-ready .rv.is-in,
+  .reveal-ready .rv-wipe.is-in {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-ready .rv-rule.is-in { transform: scaleX(1); }
+
+  /* Traces are drawn in full elsewhere; keep the class inert. */
+  .rv-draw, .rv-draw.is-in { stroke-dashoffset: 0; }
+
+  /* Header/logo entrance — plays once on load, independent of the observer
+     so the fixed header is never left hidden. */
+  .header-enter { animation: header-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  @keyframes header-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   /* ---------- Interactive ---------- */
 
@@ -361,4 +403,15 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* Reveal targets are shown in their final state with no motion, whether or
+     not the observer has fired. */
+  .reveal-ready .rv,
+  .reveal-ready .rv-wipe,
+  .reveal-ready .rv-rule {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .header-enter { animation: none !important; }
 }

@@ -46,7 +46,7 @@ const Testimonials = () => {
           {testimonials.map((t) => (
             <figure
               key={t.name}
-              className="rv border-t border-ink pt-8 flex flex-col h-full"
+              className="rv border-t border-ink pt-8 flex flex-col h-full transition-transform duration-500 ease-editorial hover:-translate-y-1"
             >
               <blockquote>
                 <p className="voice text-ink text-[clamp(1.375rem,2.1vw,1.75rem)]">

@@ -8,6 +8,7 @@ import {
   Megaphone,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useReveal } from "@/hooks/useMotion";
 
 /* ============================================================
    Seven AI Employees — the leaks, in chapters.
@@ -166,11 +167,17 @@ export const EMPLOYEES: Employee[] = [
 
 function Chapter({ e }: { e: Employee }) {
   const Icon = e.icon;
+  // Each chapter reveals on entry, its parts staggered in reading order.
+  const ref = useReveal<HTMLLIElement>({ stagger: 55 });
+
   return (
-    <li className="grid gap-x-12 gap-y-8 md:grid-cols-12 py-14 border-t border-ink">
+    <li
+      ref={ref}
+      className="grid gap-x-12 gap-y-8 md:grid-cols-12 py-14 border-t border-ink transition-[border-color] duration-500 hover:border-coral-ink"
+    >
       {/* Index + identity */}
       <div className="md:col-span-3">
-        <div className="flex items-center gap-3 mb-4">
+        <div className="rv flex items-center gap-3 mb-4">
           <span className="figure block text-[2.5rem] leading-none text-coral">
             {e.n}
           </span>
@@ -180,33 +187,33 @@ function Chapter({ e }: { e: Employee }) {
             aria-hidden="true"
           />
         </div>
-        <h3 className="display-sm !text-[1.125rem] lg:!text-[1.25rem] text-ink leading-tight">
+        <h3 className="rv display-sm !text-[1.125rem] lg:!text-[1.25rem] text-ink leading-tight">
           {e.name}
         </h3>
-        <span className="label text-stone-mid block mt-3 leading-[1.7]">
+        <span className="rv label text-stone-mid block mt-3 leading-[1.7]">
           {e.status}
         </span>
       </div>
 
       {/* The leak, then the employee that closes it */}
       <div className="md:col-span-5">
-        <blockquote className="voice text-[clamp(1.5rem,2.4vw,2rem)] text-ink mb-6">
+        <blockquote className="rv-wipe voice text-[clamp(1.5rem,2.4vw,2rem)] text-ink mb-6">
           &ldquo;{e.problem}&rdquo;
         </blockquote>
-        <h4 className="display-sm text-ink mb-4">{e.solution}</h4>
-        <p className="text-[0.9375rem] leading-relaxed text-stone-mid max-w-[48ch]">
+        <h4 className="rv display-sm text-ink mb-4">{e.solution}</h4>
+        <p className="rv text-[0.9375rem] leading-relaxed text-stone-mid max-w-[48ch]">
           {e.description}
         </p>
       </div>
 
       {/* What it does, then the reading */}
       <div className="md:col-span-4">
-        <p className="label text-stone-mid mb-5">What it does</p>
+        <p className="rv label text-stone-mid mb-5">What it does</p>
         <ul className={e.statistic ? "mb-8" : ""}>
           {e.benefits.map((b) => (
             <li
               key={b}
-              className="flex gap-4 py-2.5 border-t border-rule text-[0.9375rem] leading-relaxed text-stone-mid"
+              className="rv flex gap-4 py-2.5 border-t border-rule text-[0.9375rem] leading-relaxed text-stone-mid"
             >
               <span
                 aria-hidden="true"
@@ -218,7 +225,7 @@ function Chapter({ e }: { e: Employee }) {
         </ul>
 
         {e.statistic && (
-          <div className="border-t border-ink pt-5">
+          <div className="rv border-t border-ink pt-5">
             <p className="label text-stone-mid mb-2">Reading</p>
             <p className="figure text-[1.0625rem] md:text-lg text-ink leading-snug">
               {e.statistic}
@@ -231,6 +238,8 @@ function Chapter({ e }: { e: Employee }) {
 }
 
 const AIEmployees = () => {
+  const head = useReveal<HTMLDivElement>({ threshold: 0.2, stagger: 80 });
+
   return (
     <section
       id="employees"
@@ -239,17 +248,20 @@ const AIEmployees = () => {
     >
       <div className="shell">
         {/* Masthead */}
-        <div className="grid gap-x-16 gap-y-8 md:grid-cols-12 items-end mb-[clamp(3rem,7vw,5rem)]">
+        <div
+          ref={head}
+          className="grid gap-x-16 gap-y-8 md:grid-cols-12 items-end mb-[clamp(3rem,7vw,5rem)]"
+        >
           <div className="md:col-span-7">
-            <p className="label text-stone-mid mb-8">
+            <p className="rv label text-stone-mid mb-8">
               Seven leaks · Seven employees
             </p>
-            <h2 id="employees-heading" className="display-lg text-ink">
+            <h2 id="employees-heading" className="rv-wipe display-lg text-ink">
               Revenue doesn&rsquo;t walk out. It leaks.
             </h2>
           </div>
           <div className="md:col-span-5">
-            <p className="prose-body">
+            <p className="rv prose-body">
               Not to price, and not to a better competitor. It escapes through
               the gaps between a lead arriving and someone acting on it — the
               same seven gaps in every practice we audit. Each one below is a

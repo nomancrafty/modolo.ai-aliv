@@ -33,7 +33,7 @@ const Header = () => {
       }`}
     >
       <div className="shell">
-        <div className="flex items-center justify-between gap-8 h-[88px]">
+        <div className="header-enter flex items-center justify-between gap-8 h-[88px]">
           <a
             href="#top"
             onClick={(ev) => {
