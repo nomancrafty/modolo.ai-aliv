@@ -72,28 +72,6 @@ export function useReveal<T extends HTMLElement>(opts?: {
 }
 
 /**
- * Writes the element's scroll progress (0 -> 1 as it crosses the viewport)
- * into a CSS custom property on that element.
- *
- * Deliberately bypasses React state: the value updates every frame while the
- * element is on screen, and a setState per frame would be a re-render per frame.
- * An IntersectionObserver gates the rAF loop so nothing runs off-screen.
- */
-export function useScrollProgress<T extends HTMLElement>(
-  varName = "--p",
-  _opts?: { start?: number; end?: number }
-) {
-  const ref = useRef<T | null>(null);
-
-  // Pinned at 1: every trace renders complete rather than drawing on scroll.
-  useEffect(() => {
-    ref.current?.style.setProperty(varName, "1");
-  }, [varName]);
-
-  return ref;
-}
-
-/**
  * Counts a figure up when it first scrolls into view.
  * Returns the live value plus the ref to attach.
  */

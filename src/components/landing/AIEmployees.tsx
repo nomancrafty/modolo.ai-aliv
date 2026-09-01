@@ -30,7 +30,7 @@ import { useReveal } from "@/hooks/useMotion";
 export type Employee = {
   /** Chapter number, e.g. "01". */
   n: string;
-  /** Employee role — also feeds the hero trace marker labels. */
+  /** Employee role. */
   name: string;
   icon: LucideIcon;
   /** The leak, in the customer's own words. */

@@ -1,18 +1,17 @@
 import { Twitter, Linkedin, Facebook } from "lucide-react";
-import { SteadyTrace } from "./VitalTrace";
-import { useReveal, useScrollProgress } from "@/hooks/useMotion";
+import { useReveal } from "@/hooks/useMotion";
 
 // New MODOLO AI logo, served from /public (intrinsic 2546×1664). `h-14 w-auto`
 // renders it and preserves aspect ratio; the attrs carry the intrinsic ratio.
 const LOGO_SRC = "/favicon.png";
 
-/* Copy unchanged. The trace across the top is the narrative's last beat:
-   every leak sealed, the practice reading steady. */
+/* Copy unchanged. The old heartbeat trace across the top has been retired
+   with the rest of the pulse identity; the section now opens on the same
+   clean rule-and-diamond divider used between chapters. */
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const ref = useReveal<HTMLDivElement>({ threshold: 0.1, stagger: 40 });
-  const flowRef = useScrollProgress<HTMLDivElement>("--p", { start: 0.95, end: 0.55 });
 
   const links = {
     // The old #features section was removed; these keep their wording and now
@@ -45,8 +44,12 @@ const Footer = () => {
   return (
     <footer className="bg-paper pt-[clamp(3rem,7vw,5rem)] pb-14">
       <div ref={ref} className="shell">
-        <div ref={flowRef} className="mb-[clamp(3rem,7vw,5rem)]">
-          <SteadyTrace />
+        <div className="rv mb-[clamp(3rem,7vw,5rem)]" aria-hidden="true">
+          <div className="flex items-center gap-4">
+            <span className="h-px flex-1 bg-rule" />
+            <span className="w-1.5 h-1.5 rotate-45 bg-coral shrink-0" />
+            <span className="h-px flex-1 bg-rule" />
+          </div>
         </div>
 
         <div className="grid gap-x-12 gap-y-14 md:grid-cols-12">
@@ -118,7 +121,7 @@ const Footer = () => {
           <p className="label text-stone-mid">
             Medical, Dental &amp; Law Office AI Solutions
             <span className="text-stone-mid mx-2" aria-hidden="true">/</span>
-            www.aifordp.com
+            www.modolo.ai
           </p>
         </div>
       </div>

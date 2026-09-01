@@ -264,9 +264,6 @@
   }
   .reveal-ready .rv-rule.is-in { transform: scaleX(1); }
 
-  /* Traces are drawn in full elsewhere; keep the class inert. */
-  .rv-draw, .rv-draw.is-in { stroke-dashoffset: 0; }
-
   /* Header/logo entrance — plays once on load, independent of the observer
      so the fixed header is never left hidden. */
   .header-enter { animation: header-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -375,24 +372,6 @@
   .text-coral-ink { color: hsl(var(--coral-ink)); }
   .bg-ink { background-color: hsl(var(--ink)); }
 }
-
-/* ============================================================
-   VitalTrace — drawn in full, always.
-
-   The scroll-driven draw and the hero's draw-on-load were removed with the
-   rest of the motion. The traces keep their geometry, so the problem half
-   still reads grey and degrading and the solution half coral and restored.
-   ============================================================ */
-
-.trace-problem,
-.trace-solution,
-.trace-steady,
-.hero-trace {
-  stroke-dashoffset: 0;
-}
-
-.trace-seal { opacity: 1; }
-.hero-node { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
