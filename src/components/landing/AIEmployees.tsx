@@ -585,10 +585,24 @@ const AIEmployees = () => {
   return (
     <section
       id="employees"
-      className="bg-paper py-[var(--chapter-y)]"
+      className="relative overflow-hidden bg-paper py-[var(--chapter-y)]"
       aria-labelledby="employees-heading"
     >
-      <div className="shell">
+      {/* One extremely faint glow behind the introduction — atmosphere only,
+          never over the long body copy below. */}
+      <span
+        aria-hidden="true"
+        className="glow"
+        style={{
+          width: "min(60vw, 640px)",
+          height: "min(40vw, 420px)",
+          top: "-6%",
+          left: "-4%",
+          background:
+            "radial-gradient(circle, rgba(255,176,132,0.16), transparent 70%)",
+        }}
+      />
+      <div className="relative shell">
         {/* Masthead */}
         <div
           ref={head}
