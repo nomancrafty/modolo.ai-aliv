@@ -32,10 +32,9 @@ export function useReveal<T extends HTMLElement>(opts?: {
     const root = ref.current;
     if (!root) return;
 
-    const targets = Array.from(
-      root.querySelectorAll<HTMLElement>(".rv, .rv-wipe, .rv-rule")
-    );
-    if (root.matches(".rv, .rv-wipe, .rv-rule")) targets.unshift(root);
+    const SEL = ".rv, .rv-wipe, .rv-rule, .rv-bar, .rv-pop";
+    const targets = Array.from(root.querySelectorAll<HTMLElement>(SEL));
+    if (root.matches(SEL)) targets.unshift(root);
 
     const revealAll = () => {
       root.classList.add("is-in");
@@ -72,16 +71,69 @@ export function useReveal<T extends HTMLElement>(opts?: {
 }
 
 /**
- * Counts a figure up when it first scrolls into view.
- * Returns the live value plus the ref to attach.
+ * Counts a figure up from zero the first time it scrolls into view, once.
+ * Returns the live value plus the ref to attach to the element being counted.
+ *
+ * Reduced motion (or no observer support) prints the final value immediately.
+ * Runs on requestAnimationFrame for the ~1.5s it animates, then stops — no
+ * looping, and it cleans up its frame and observer on unmount.
  */
 export function useCountUp(
   target: number,
-  _opts?: { duration?: number; decimals?: number }
+  opts?: { duration?: number; decimals?: number }
 ) {
   const ref = useRef<HTMLSpanElement | null>(null);
-  // No count-up: the figure is simply printed.
-  return { ref, value: target };
+  const duration = opts?.duration ?? 1500;
+  const [value, setValue] = useState(() =>
+    prefersReducedMotion() ? target : 0
+  );
+
+  useEffect(() => {
+    const el = ref.current;
+    if (
+      prefersReducedMotion() ||
+      typeof IntersectionObserver === "undefined" ||
+      !el
+    ) {
+      setValue(target);
+      return;
+    }
+
+    let raf = 0;
+    let startT = 0;
+    let started = false;
+    const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    const tick = (now: number) => {
+      if (!startT) startT = now;
+      const p = Math.min((now - startT) / duration, 1);
+      setValue(target * easeOut(p));
+      if (p < 1) raf = requestAnimationFrame(tick);
+      else setValue(target);
+    };
+
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        for (const e of entries) {
+          if (e.isIntersecting && !started) {
+            started = true;
+            raf = requestAnimationFrame(tick);
+            obs.disconnect();
+            break;
+          }
+        }
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(el);
+
+    return () => {
+      io.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [target, duration]);
+
+  return { ref, value };
 }
 
 /** True once the window has scrolled past `offset`. Used by the header. */

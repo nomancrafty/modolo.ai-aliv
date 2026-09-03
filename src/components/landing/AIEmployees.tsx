@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useReveal } from "@/hooks/useMotion";
+import EmployeeJourney from "./EmployeeJourney";
 
 /* ============================================================
    Seven AI Employees — the road and its seven exits.
@@ -416,7 +417,7 @@ function Callouts({ blocks }: { blocks: Block[] }) {
                       </div>
                       <div className="h-2 w-full bg-rule overflow-hidden">
                         <span
-                          className="block h-full bg-coral"
+                          className="rv-bar block h-full bg-coral"
                           style={{ width: `${(b.value / max) * 100}%` }}
                         />
                       </div>
@@ -460,13 +461,13 @@ function Callouts({ blocks }: { blocks: Block[] }) {
                   >
                     {v.status === "check" ? (
                       <Check
-                        className="w-[18px] h-[18px] text-coral-ink shrink-0 mt-0.5"
+                        className="rv-pop w-[18px] h-[18px] text-coral-ink shrink-0 mt-0.5"
                         strokeWidth={2}
                         aria-hidden="true"
                       />
                     ) : (
                       <X
-                        className="w-[18px] h-[18px] text-stone-mid shrink-0 mt-0.5"
+                        className="rv-pop w-[18px] h-[18px] text-stone-mid shrink-0 mt-0.5"
                         strokeWidth={2}
                         aria-hidden="true"
                       />
@@ -489,9 +490,9 @@ function Callouts({ blocks }: { blocks: Block[] }) {
 
           case "steps":
             return (
-              <ol key={i} className="rv space-y-4">
+              <ol key={i} className="space-y-4">
                 {block.items.map((t, si) => (
-                  <li key={si} className="flex items-baseline gap-4">
+                  <li key={si} className="rv flex items-baseline gap-4">
                     <span className="figure text-[1.25rem] leading-none text-coral-ink shrink-0">
                       {String(si + 1).padStart(2, "0")}
                     </span>
@@ -515,7 +516,11 @@ function Chapter({ e }: { e: Exit }) {
   const ref = useReveal<HTMLLIElement>({ stagger: 45 });
 
   return (
-    <li ref={ref} className="pt-[clamp(3rem,7vw,5rem)] first:pt-0">
+    <li
+      ref={ref}
+      id={`exit-${e.n}`}
+      className="scroll-mt-[168px] md:scroll-mt-[184px] pt-[clamp(3rem,7vw,5rem)] first:pt-0"
+    >
       <div className="grid gap-x-12 gap-y-10 md:grid-cols-12 border-t border-ink pt-[clamp(2rem,4vw,3rem)]">
         {/* Left — exit number + identity */}
         <div className="md:col-span-3">
@@ -585,28 +590,34 @@ const AIEmployees = () => {
   return (
     <section
       id="employees"
-      className="relative overflow-hidden bg-paper py-[var(--chapter-y)]"
+      className="relative bg-paper py-[var(--chapter-y)]"
       aria-labelledby="employees-heading"
     >
       {/* One extremely faint glow behind the introduction — atmosphere only,
-          never over the long body copy below. */}
-      <span
+          never over the long body copy below. In its own clip layer so it
+          never adds page scroll and never blocks the sticky rail. */}
+      <div
         aria-hidden="true"
-        className="glow"
-        style={{
-          width: "min(60vw, 640px)",
-          height: "min(40vw, 420px)",
-          top: "-6%",
-          left: "-4%",
-          background:
-            "radial-gradient(circle, rgba(255,176,132,0.16), transparent 70%)",
-        }}
-      />
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <span
+          className="glow"
+          style={{
+            width: "min(60vw, 640px)",
+            height: "min(40vw, 420px)",
+            top: "-6%",
+            left: "-4%",
+            background:
+              "radial-gradient(circle, rgba(255,176,132,0.16), transparent 70%)",
+          }}
+        />
+      </div>
+
+      {/* Masthead */}
       <div className="relative shell">
-        {/* Masthead */}
         <div
           ref={head}
-          className="grid gap-x-16 gap-y-8 md:grid-cols-12 items-end mb-[clamp(3rem,7vw,5rem)]"
+          className="grid gap-x-16 gap-y-8 md:grid-cols-12 items-end mb-[clamp(2.5rem,6vw,4rem)]"
         >
           <div className="md:col-span-7">
             <p className="rv label text-stone-mid mb-8">
@@ -625,8 +636,13 @@ const AIEmployees = () => {
             </p>
           </div>
         </div>
+      </div>
 
-        {/* The seven exits */}
+      {/* The seven-stage system line — sticky on md+, tracks the reader. */}
+      <EmployeeJourney stages={EXITS.map((e) => ({ n: e.n, name: e.name }))} />
+
+      {/* The seven exits */}
+      <div className="relative shell mt-[clamp(2.5rem,6vw,4rem)]">
         <ol>
           {EXITS.map((e) => (
             <Chapter key={e.n} e={e} />

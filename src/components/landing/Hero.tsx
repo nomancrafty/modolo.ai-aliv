@@ -48,7 +48,7 @@ const Hero = () => {
               blue at the lower-right. Non-interactive, clipped by the panel. */}
           <span
             aria-hidden="true"
-            className="glow"
+            className="glow hero-glow-1"
             style={{
               width: "min(46vw, 460px)",
               height: "min(46vw, 460px)",
@@ -60,7 +60,7 @@ const Hero = () => {
           />
           <span
             aria-hidden="true"
-            className="glow"
+            className="glow hero-glow-2"
             style={{
               width: "min(48vw, 520px)",
               height: "min(48vw, 520px)",
@@ -110,10 +110,10 @@ const Hero = () => {
                 <div className="rv flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                   <button
                     onClick={() => scrollToSection("cta")}
-                    className="btn-ink w-full sm:w-auto justify-center"
+                    className="btn-ink group w-full sm:w-auto justify-center"
                   >
                     <span>Book Now</span>
-                    <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                    <ArrowRight className="btn-arrow w-4 h-4" aria-hidden="true" />
                   </button>
                   <button
                     onClick={() => scrollToSection("employees")}

@@ -264,6 +264,25 @@
   }
   .reveal-ready .rv-rule.is-in { transform: scaleX(1); }
 
+  /* A comparison bar filling from zero to its set width. The element carries
+     its final width inline; scaleX animates it in without touching layout. */
+  .reveal-ready .rv-bar {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.72s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));
+    transition-delay: var(--rv-delay, 0ms);
+  }
+  .reveal-ready .rv-bar.is-in { transform: scaleX(1); }
+
+  /* A small state icon (check / x / step) popping in with a touch of scale. */
+  .reveal-ready .rv-pop {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.5s ease, transform 0.5s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));
+    transition-delay: var(--rv-delay, 0ms);
+  }
+  .reveal-ready .rv-pop.is-in { opacity: 1; transform: none; }
+
   /* Header/logo entrance — plays once on load, independent of the observer
      so the fixed header is never left hidden. */
   .header-enter { animation: header-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -341,6 +360,15 @@
     color: hsl(var(--paper));
   }
 
+  /* Button micro-interaction: a 1px rise on hover/focus. Kept short and
+     restrained — no bounce. (The coral wipe on .btn-ink lives on ::after.) */
+  .btn-ink, .btn-line { transition-property: color, border-color, background-color, transform; transition-duration: 0.22s; transition-timing-function: ease; }
+  .btn-ink:hover, .btn-ink:focus-visible,
+  .btn-line:hover, .btn-line:focus-visible { transform: translateY(-1px); }
+  /* Arrow nudge — the icon slides ~4px when its button is hovered/focused. */
+  .btn-arrow { transition: transform 0.22s ease; }
+  .group:hover .btn-arrow, .group:focus-visible .btn-arrow { transform: translateX(4px); }
+
   /* ---------- Hero: inset gradient panel ----------
      One large rounded container holding the whole hero composition. A very
      soft multidirectional radial wash over a warm off-white base — peach at
@@ -383,6 +411,20 @@
     filter: blur(64px);
     pointer-events: none;
     z-index: 0;
+  }
+
+  /* Ambient drift for the hero corner glows — barely perceptible: ~12px of
+     travel and a hair of scale over ~20s, alternating so it never snaps back.
+     Only transform moves; the gradient itself never rotates. */
+  .hero-glow-1 { animation: glow-drift-1 22s ease-in-out infinite alternate; }
+  .hero-glow-2 { animation: glow-drift-2 26s ease-in-out infinite alternate; }
+  @keyframes glow-drift-1 {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to { transform: translate3d(14px, 10px, 0) scale(1.03); }
+  }
+  @keyframes glow-drift-2 {
+    from { transform: translate3d(0, 0, 0) scale(1.02); }
+    to { transform: translate3d(-12px, -12px, 0) scale(1); }
   }
 
   .link-rule { position: relative; transition: color 0.35s ease; }
@@ -453,13 +495,17 @@
   }
 
   /* Reveal targets are shown in their final state with no motion, whether or
-     not the observer has fired. */
+     not the observer has fired. Bars sit at full width; pops fully shown. */
   .reveal-ready .rv,
   .reveal-ready .rv-wipe,
-  .reveal-ready .rv-rule {
+  .reveal-ready .rv-rule,
+  .reveal-ready .rv-bar,
+  .reveal-ready .rv-pop {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
   }
   .header-enter { animation: none !important; }
+  /* No ambient glow drift for reduced-motion users. */
+  .hero-glow-1, .hero-glow-2 { animation: none !important; }
 }
