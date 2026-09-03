@@ -406,9 +406,9 @@
     font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
     font-variation-settings: "wdth" 112;
     font-weight: 600;
-    letter-spacing: -0.035em;
-    line-height: 0.95;
-    font-size: clamp(3.1rem, 5.5vw, 5.5rem);
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    font-size: clamp(2.5rem, 4vw, 3.9rem);
   }
 
   /* Decorative soft glow — a blurred, low-opacity radial that adds atmosphere
