@@ -11,6 +11,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import type { CSSProperties } from "react";
 import { useReveal } from "@/hooks/useMotion";
 import EmployeeJourney from "./EmployeeJourney";
 
@@ -510,76 +511,124 @@ function Callouts({ blocks }: { blocks: Block[] }) {
   );
 }
 
-function Chapter({ e }: { e: Exit }) {
+/* Two pale corner glows per card, positions alternating down the column, so
+   each card is unmistakably one family yet none feels repetitive. Soft radial
+   gradients (no blur filter) keep this cheap; .glow-a/.glow-b drift slowly. */
+const CORNER: Record<string, CSSProperties> = {
+  tl: { top: "-14%", left: "-10%" },
+  tr: { top: "-14%", right: "-10%" },
+  bl: { bottom: "-16%", left: "-10%" },
+  br: { bottom: "-16%", right: "-10%" },
+};
+const TINT: Record<string, string> = {
+  peach: "hsl(var(--peach) / 0.62)",
+  blue: "hsl(var(--blue) / 0.6)",
+  mint: "hsl(var(--mint) / 0.6)",
+  lavender: "hsl(var(--lavender) / 0.72)",
+};
+const GLOW_PATTERNS: [keyof typeof CORNER, keyof typeof TINT][][] = [
+  [["tl", "peach"], ["br", "blue"]],
+  [["bl", "peach"], ["tr", "mint"]],
+  [["tr", "lavender"], ["bl", "peach"]],
+];
+
+function cardGlows(i: number) {
+  return GLOW_PATTERNS[i % GLOW_PATTERNS.length];
+}
+
+function Chapter({ e, i }: { e: Exit; i: number }) {
   const Icon = e.icon;
-  // Each exit reveals on entry, its parts staggered in reading order.
-  const ref = useReveal<HTMLLIElement>({ stagger: 45 });
+  // Each card reveals on entry, its parts staggered in reading order.
+  const ref = useReveal<HTMLLIElement>({ stagger: 55 });
+  const pad = "p-[clamp(1.5rem,3.5vw,3rem)]";
 
   return (
     <li
       ref={ref}
       id={`exit-${e.n}`}
-      className="scroll-mt-[168px] md:scroll-mt-[184px] pt-[clamp(3rem,7vw,5rem)] first:pt-0"
+      className="scroll-mt-[168px] md:scroll-mt-[184px]"
     >
-      <div className="grid gap-x-12 gap-y-10 md:grid-cols-12 border-t border-ink pt-[clamp(2rem,4vw,3rem)]">
-        {/* Left — exit number + identity */}
-        <div className="md:col-span-3">
-          <div className="rv flex items-baseline gap-3 mb-4">
-            <span className="label text-stone-mid">Exit</span>
-            <span className="figure text-[3rem] md:text-[3.5rem] leading-none text-coral">
-              {e.n}
+      <article className="rv panel card-accent">
+        {/* Pale drifting corner glows, clipped by the panel's rounded box. */}
+        {cardGlows(i).map(([corner, tint], gi) => (
+          <span
+            key={gi}
+            aria-hidden="true"
+            className={gi === 0 ? "glow-a" : "glow-b"}
+            style={{
+              position: "absolute",
+              ...CORNER[corner],
+              width: "min(55%, 380px)",
+              height: "min(55%, 360px)",
+              borderRadius: "9999px",
+              pointerEvents: "none",
+              zIndex: 0,
+              background: `radial-gradient(circle, ${TINT[tint]}, transparent 70%)`,
+            }}
+          />
+        ))}
+
+        <div className={`relative grid gap-x-12 gap-y-10 md:grid-cols-12 ${pad}`}>
+          {/* Left — identity rail */}
+          <div className="md:col-span-3">
+            <div className="flex items-baseline gap-3 mb-4">
+              <span className="label text-stone-mid">Exit</span>
+              <span className="figure text-[3rem] md:text-[3.5rem] leading-none text-coral">
+                {e.n}
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5 mb-3">
+              <Icon
+                className="w-[18px] h-[18px] text-coral-ink shrink-0"
+                strokeWidth={1.5}
+                aria-hidden="true"
+              />
+              <h3 className="display-sm !text-[1.125rem] lg:!text-[1.25rem] text-ink leading-tight">
+                {e.name}
+              </h3>
+            </div>
+            <p className="label text-stone-mid">Exit {e.n} of 7</p>
+          </div>
+
+          {/* Center — title + narrative */}
+          <div className="md:col-span-5">
+            <blockquote className="voice text-[clamp(1.5rem,2.6vw,2.125rem)] text-ink mb-7">
+              &ldquo;{e.title}&rdquo;
+            </blockquote>
+            <div className="space-y-4 max-w-[68ch]">
+              {e.narrative.map((p, pi) => (
+                <p
+                  key={pi}
+                  className="text-[0.9375rem] md:text-base leading-relaxed text-stone-mid"
+                >
+                  {p}
+                </p>
+              ))}
+            </div>
+          </div>
+
+          {/* Right — results / callouts */}
+          <div className="md:col-span-4">
+            <Callouts blocks={e.blocks} />
+          </div>
+        </div>
+
+        {/* Full-width "Exit closed by" banner, flush to the card edges */}
+        <div className="relative bg-ink text-on-ink px-[clamp(1.5rem,3.5vw,3rem)] py-5 md:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-x-5 gap-y-2.5">
+            <span className="label text-coral-bright inline-flex items-center gap-2 shrink-0">
+              Exit closed by
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </span>
+            <span className="text-[0.9375rem] leading-snug">
+              <span className="label text-on-ink">
+                {e.banner.tag} • {e.banner.solution}
+              </span>
+              <span className="text-on-ink-muted"> — {e.banner.detail}</span>
             </span>
           </div>
-          <div className="rv flex items-center gap-2.5">
-            <Icon
-              className="w-[18px] h-[18px] text-coral-ink shrink-0"
-              strokeWidth={1.5}
-              aria-hidden="true"
-            />
-            <h3 className="display-sm !text-[1.125rem] lg:!text-[1.25rem] text-ink leading-tight">
-              {e.name}
-            </h3>
-          </div>
         </div>
-
-        {/* Center — title + narrative */}
-        <div className="md:col-span-5">
-          <blockquote className="rv-wipe voice text-[clamp(1.5rem,2.6vw,2.125rem)] text-ink mb-7">
-            &ldquo;{e.title}&rdquo;
-          </blockquote>
-          <div className="space-y-4 max-w-[54ch]">
-            {e.narrative.map((p, pi) => (
-              <p
-                key={pi}
-                className="rv text-[0.9375rem] md:text-base leading-relaxed text-stone-mid"
-              >
-                {p}
-              </p>
-            ))}
-          </div>
-        </div>
-
-        {/* Right — stats and callouts */}
-        <div className="md:col-span-4">
-          <Callouts blocks={e.blocks} />
-        </div>
-      </div>
-
-      {/* Bottom — full-width "Exit closed by" banner */}
-      <div className="rv mt-[clamp(1.5rem,3.5vw,2.75rem)] bg-ink text-on-ink px-6 py-5 md:px-8 md:py-6">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-x-5 gap-y-2.5">
-          <span className="label text-coral-bright inline-flex items-center gap-2 shrink-0">
-            Exit closed by
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </span>
-          <span className="text-[0.9375rem] leading-snug">
-            <span className="label text-on-ink">
-              {e.banner.tag} • {e.banner.solution}
-            </span>
-            <span className="text-on-ink-muted"> — {e.banner.detail}</span>
-          </span>
-        </div>
-      </div>
+      </article>
     </li>
   );
 }
@@ -620,10 +669,10 @@ const AIEmployees = () => {
           className="grid gap-x-16 gap-y-8 md:grid-cols-12 items-end mb-[clamp(2.5rem,6vw,4rem)]"
         >
           <div className="md:col-span-7">
-            <p className="rv label text-stone-mid mb-8">
+            <p className="rv eyebrow label text-stone-mid mb-8">
               Seven exits · Seven AI employees
             </p>
-            <h2 id="employees-heading" className="rv-wipe display-lg text-ink">
+            <h2 id="employees-heading" className="rv-wipe display-lg text-ink max-w-[15ch]">
               Revenue doesn&rsquo;t walk out. It takes the exit.
             </h2>
           </div>
@@ -641,11 +690,11 @@ const AIEmployees = () => {
       {/* The seven-stage system line — sticky on md+, tracks the reader. */}
       <EmployeeJourney stages={EXITS.map((e) => ({ n: e.n, name: e.name }))} />
 
-      {/* The seven exits */}
-      <div className="relative shell mt-[clamp(2.5rem,6vw,4rem)]">
-        <ol>
-          {EXITS.map((e) => (
-            <Chapter key={e.n} e={e} />
+      {/* The seven exits, each a premium chapter card */}
+      <div className="relative shell mt-[clamp(2rem,5vw,3.5rem)]">
+        <ol className="space-y-[clamp(1.5rem,3.5vw,2.5rem)]">
+          {EXITS.map((e, i) => (
+            <Chapter key={e.n} e={e} i={i} />
           ))}
         </ol>
       </div>

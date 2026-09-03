@@ -14,10 +14,18 @@
 
 @layer base {
   :root {
-    /* --- Grounds: warm stone. Not clinical white, not cream. --- */
-    --paper: 60 11% 93%;          /* #EFEFEB  page ground */
-    --paper-deep: 60 10% 88%;     /* #E3E3DD  inset bands */
+    /* --- Grounds: warm off-white. Not clinical, not cream. --- */
+    --paper: 60 20% 95%;          /* #F5F5F0  page ground */
+    --paper-deep: 60 14% 92%;     /* inset bands */
     --paper-raised: 0 0% 100%;    /* #FFFFFF  panels that must sit forward */
+    --surface: 24 60% 99%;        /* #FFFDFC  warm white — premium card surface */
+
+    /* --- Atmospheric supporting tints. Very pale; glows only, never text. --- */
+    --peach: 22 100% 90%;         /* #FFE0CF */
+    --apricot: 28 100% 95%;       /* #FFF0E5 */
+    --lavender: 252 100% 96%;     /* #EEE9FF */
+    --blue: 214 100% 95%;         /* #E6F0FF */
+    --mint: 147 42% 95%;          /* #ECF7F1 */
 
     /* --- Ink: warm near-black, and the dark band it makes --- */
     --ink: 80 6% 10%;             /* #191A17  15.16:1 on paper */
@@ -379,16 +387,16 @@
   .hero-panel {
     position: relative;
     isolation: isolate;
-    border-radius: clamp(18px, 3vw, 32px);
+    border-radius: clamp(20px, 3vw, 36px);
     border: 1px solid hsl(var(--ink) / 0.06);
     background:
-      radial-gradient(circle at 6% 8%, rgba(255, 178, 135, 0.34), transparent 40%),
-      radial-gradient(circle at 44% 14%, rgba(226, 214, 246, 0.34), transparent 44%),
-      radial-gradient(circle at 84% 78%, rgba(200, 222, 252, 0.40), transparent 46%),
-      radial-gradient(circle at 99% 4%, rgba(196, 240, 228, 0.22), transparent 32%),
-      #f8f7f3;
+      radial-gradient(circle at 4% 6%, rgba(255, 168, 120, 0.42), transparent 42%),
+      radial-gradient(circle at 40% 10%, rgba(224, 212, 248, 0.34), transparent 42%),
+      radial-gradient(circle at 86% 82%, rgba(198, 220, 252, 0.40), transparent 46%),
+      radial-gradient(circle at 100% 60%, rgba(196, 240, 228, 0.22), transparent 34%),
+      #fefdfb;
     box-shadow: 0 1px 2px hsl(var(--ink) / 0.02),
-      0 24px 60px -46px hsl(var(--ink) / 0.18);
+      0 28px 64px -48px hsl(var(--ink) / 0.20);
     overflow: hidden;
   }
 
@@ -399,8 +407,8 @@
     font-variation-settings: "wdth" 112;
     font-weight: 600;
     letter-spacing: -0.035em;
-    line-height: 1.0;
-    font-size: clamp(2.5rem, calc(3vw + 1.75rem), 5rem);
+    line-height: 0.95;
+    font-size: clamp(3.1rem, 5.5vw, 5.5rem);
   }
 
   /* Decorative soft glow — a blurred, low-opacity radial that adds atmosphere
@@ -425,6 +433,78 @@
   @keyframes glow-drift-2 {
     from { transform: translate3d(0, 0, 0) scale(1.02); }
     to { transform: translate3d(-12px, -12px, 0) scale(1); }
+  }
+
+  /* Generic slow drift for any ambient glow (cards, sections). Same barely-
+     perceptible travel as the hero; paused for reduced motion below. */
+  .glow-a { animation: glow-drift-1 22s ease-in-out infinite alternate; }
+  .glow-b { animation: glow-drift-2 26s ease-in-out infinite alternate; }
+
+  /* The active journey node's orange ring, breathing very gently. Only one
+     node carries this at a time; disabled for reduced motion (static ring). */
+  .node-active-ring { animation: ring-breathe 2.8s ease-in-out infinite; }
+  @keyframes ring-breathe {
+    0%, 100% { box-shadow: 0 0 0 4px hsl(var(--coral) / 0.16); }
+    50% { box-shadow: 0 0 0 7px hsl(var(--coral) / 0.05); }
+  }
+
+  /* ---------- Premium surfaces ----------
+     One card/panel system across the page: warm-white surface, a fine ink
+     border, a broad soft shadow, generously rounded. Overflow hidden so inner
+     corner glows are clipped to the rounded box.
+  ---------------------------------------- */
+  .panel {
+    position: relative;
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--ink) / 0.08);
+    border-radius: 28px;
+    box-shadow: 0 1px 2px hsl(var(--ink) / 0.03),
+      0 20px 44px -30px hsl(var(--ink) / 0.12);
+    overflow: hidden;
+  }
+
+  /* A thin orange top accent for chapter cards. */
+  .card-accent::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, hsl(var(--coral)), hsl(var(--coral-bright)));
+    z-index: 2;
+  }
+
+  /* A small pill that carries a result figure. */
+  .metric-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid hsl(var(--coral) / 0.32);
+    background: hsl(var(--coral) / 0.07);
+    color: hsl(var(--coral-ink));
+    border-radius: 999px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+
+  /* Section eyebrow: the mono label with a small coral tick before it. */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    transform: rotate(45deg);
+    background: hsl(var(--coral));
+    flex: none;
   }
 
   .link-rule { position: relative; transition: color 0.35s ease; }
@@ -506,6 +586,6 @@
     transition: none !important;
   }
   .header-enter { animation: none !important; }
-  /* No ambient glow drift for reduced-motion users. */
-  .hero-glow-1, .hero-glow-2 { animation: none !important; }
+  /* No ambient glow drift or ring pulse for reduced-motion users. */
+  .hero-glow-1, .hero-glow-2, .glow-a, .glow-b, .node-active-ring { animation: none !important; }
 }

@@ -207,7 +207,7 @@ export default function EmployeeJourney({
     <div ref={railRef} className="md:sticky md:top-[88px] z-40">
       <div
         ref={barRef}
-        className="border-y border-rule bg-paper/85 backdrop-blur-sm"
+        className="border-y border-[hsl(var(--ink)/0.08)] bg-[hsl(var(--surface)/0.82)] backdrop-blur-md shadow-[0_12px_32px_-28px_hsl(var(--ink)/0.35)]"
       >
         <div className="shell py-4 md:py-5">
           <div
@@ -261,7 +261,7 @@ export default function EmployeeJourney({
                         className={[
                           "flex items-center justify-center h-11 w-11 rounded-full border transition-all duration-300 figure text-[0.8125rem]",
                           state === "active"
-                            ? "border-coral text-coral-ink bg-paper scale-[1.04] shadow-[0_0_0_4px_hsl(var(--coral)/0.14)]"
+                            ? "node-active-ring border-coral text-coral-ink bg-paper scale-[1.04] shadow-[0_0_0_4px_hsl(var(--coral)/0.16)]"
                             : state === "done"
                             ? "border-coral bg-coral text-white"
                             : "border-rule text-stone-mid bg-paper",

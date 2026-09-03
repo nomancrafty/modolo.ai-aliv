@@ -17,7 +17,7 @@ function Stat({
   const text = decimals > 0 ? shown.toFixed(decimals) : Math.round(shown).toString();
 
   return (
-    <div className="rv border-t border-ink pt-4">
+    <div className="rv border-t border-[hsl(var(--ink)/0.10)] pt-4">
       <span ref={ref} className="figure block text-[1.75rem] md:text-[2.25rem] text-ink leading-none">
         {text}
         <span className="text-coral">{suffix}</span>
@@ -74,7 +74,7 @@ const Hero = () => {
           {/* Composition sits above the wash. */}
           <div className="relative">
             {/* Top — two columns: identity/headline left, promise + CTAs right */}
-            <div className="grid gap-x-12 gap-y-9 lg:grid-cols-12 lg:items-end">
+            <div className="grid gap-x-12 gap-y-9 lg:grid-cols-12 lg:items-center">
               {/* Left: eyebrow + headline */}
               <div className="lg:col-span-7">
                 <div className="rv flex items-center gap-5 mb-[clamp(1.5rem,4vw,2.5rem)]">
@@ -125,8 +125,8 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Bottom — compact trust proof, part of the same composition */}
-            <div className="mt-[clamp(2.5rem,6vw,4rem)]">
+            {/* Bottom — compact trust proof, divided from the composition above */}
+            <div className="mt-[clamp(2.25rem,5vw,3.5rem)] pt-[clamp(1.75rem,3.5vw,2.75rem)] border-t border-[hsl(var(--ink)/0.08)]">
               <p className="label text-stone-mid mb-7 rv">
                 Trusted by leading medical, dental, and law offices
               </p>

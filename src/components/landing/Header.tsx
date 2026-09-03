@@ -28,8 +28,10 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 border-b ${
-        scrolled ? "bg-paper/92 backdrop-blur-md border-rule" : "bg-transparent border-transparent"
+      className={`fixed top-0 inset-x-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+        scrolled
+          ? "bg-paper/80 backdrop-blur-md border-[hsl(var(--ink)/0.08)] shadow-[0_8px_24px_-20px_hsl(var(--ink)/0.25)]"
+          : "bg-transparent backdrop-blur-0 border-transparent shadow-none"
       }`}
     >
       <div className="shell">

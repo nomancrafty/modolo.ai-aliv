@@ -42,8 +42,21 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-paper pt-[clamp(3rem,7vw,5rem)] pb-14">
-      <div ref={ref} className="shell">
+    <footer className="relative overflow-hidden bg-paper pt-[clamp(3rem,7vw,5rem)] pb-14">
+      {/* A very faint, static corner haze — atmosphere, no motion. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span
+          className="glow"
+          style={{
+            width: "min(50vw, 560px)",
+            height: "min(30vw, 340px)",
+            bottom: "-14%",
+            right: "-6%",
+            background: "radial-gradient(circle, hsl(var(--peach) / 0.4), transparent 72%)",
+          }}
+        />
+      </div>
+      <div ref={ref} className="relative shell">
         <div className="rv mb-[clamp(3rem,7vw,5rem)]" aria-hidden="true">
           <div className="flex items-center gap-4">
             <span className="h-px flex-1 bg-rule" />
