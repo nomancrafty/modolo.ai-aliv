@@ -36,7 +36,7 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="relative overflow-hidden bg-paper pt-[112px] md:pt-[128px] pb-[var(--chapter-y)]"
+      className="relative overflow-hidden bg-paper flex flex-col min-h-svh pt-[108px] md:pt-[116px] pb-[var(--chapter-y)]"
     >
       {/* Full-width soft wash, fading into the shared page ground — no panel,
           no border, no rounded edge. Peach and blue drift; lavender/mint rest. */}
@@ -72,75 +72,72 @@ const Hero = () => {
         />
       </div>
 
-      {/* Composition sits above the wash, aligned in the shared container. */}
-      <div ref={ref} className="relative shell">
-        <div>
-            {/* Top — two columns: identity/headline left, promise + CTAs right */}
-            <div className="grid gap-x-12 gap-y-9 lg:grid-cols-12 lg:items-center">
-              {/* Left: eyebrow + headline */}
-              <div className="lg:col-span-7">
-                <div className="rv flex items-center gap-5 mb-[clamp(1.5rem,4vw,2.5rem)]">
-                  <p className="label text-stone-mid">
-                    Medical
-                    <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
-                    Dental
-                    <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
-                    Law
-                  </p>
-                  <span className="rv-rule hidden sm:block flex-1 h-px bg-rule origin-left" />
-                </div>
+      {/* Composition sits above the wash — one left-aligned stack that fills at
+          least the first screen, the trust proof settling toward the bottom. */}
+      <div ref={ref} className="relative shell flex-1 flex flex-col">
+        {/* Lead group: eyebrow, headline, promise, CTAs */}
+        <div className="max-w-[62rem]">
+          <div className="rv flex items-center gap-5 mb-[clamp(1.5rem,4vw,2.5rem)]">
+            <p className="label text-stone-mid">
+              Medical
+              <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
+              Dental
+              <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
+              Law
+            </p>
+            <span className="rv-rule hidden sm:block flex-1 h-px bg-rule origin-left" />
+          </div>
 
-                <h1 className="hero-title">
-                  <span className="rv-wipe block text-ink">
-                    Acquire More Patients &amp; Clients
-                  </span>
-                  <span className="rv-wipe block text-coral mt-2.5 md:mt-3">
-                    Eliminate Manual Work &amp; Waste
-                  </span>
-                </h1>
-              </div>
+          <h1 className="hero-title">
+            <span className="rv-wipe block text-ink">
+              Acquire More Patients &amp; Clients
+            </span>
+            <span className="rv-wipe block text-coral mt-2.5 md:mt-3">
+              Eliminate Manual Work &amp; Waste
+            </span>
+          </h1>
 
-              {/* Right: supporting copy, then the two CTAs */}
-              <div className="lg:col-span-5 flex flex-col items-start gap-6">
-                <p className="prose-body rv">
-                  Every day without AI, competitors win clients while your team
-                  loses time to repetitive work.
-                </p>
-                <p className="display-sm !text-[clamp(1.375rem,2.2vw,1.75rem)] text-ink rv">
-                  Ready to scale your practice?
-                </p>
-                <div className="rv flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                  <button
-                    onClick={() => scrollToSection("cta")}
-                    className="btn-ink group w-full sm:w-auto justify-center"
-                  >
-                    <span>Book Now</span>
-                    <ArrowRight className="btn-arrow w-4 h-4" aria-hidden="true" />
-                  </button>
-                  <button
-                    onClick={() => scrollToSection("employees")}
-                    className="btn-line w-full sm:w-auto"
-                  >
-                    <span>Explore solutions</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+          <p className="prose-body rv mt-[clamp(1.75rem,3.5vw,2.5rem)] max-w-[48ch]">
+            Every day without AI, competitors win clients while your team loses
+            time to repetitive work.
+          </p>
 
-            {/* Bottom — compact trust proof, divided from the composition above */}
-            <div className="mt-[clamp(2.25rem,5vw,3.5rem)] pt-[clamp(1.75rem,3.5vw,2.75rem)] border-t border-[hsl(var(--ink)/0.08)]">
-              <p className="label text-stone-mid mb-7 rv">
-                Trusted by leading medical, dental, and law offices
-              </p>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8">
-                <Stat value={150} suffix="+" label="Medical, Dental & Law Offices" />
-                <Stat value={1.8} decimals={1} suffix="M+" label="Patient Interactions" />
-                <Stat value={22} suffix="+" label="Years Healthcare Tech" />
-                <Stat value={4.9} decimals={1} suffix="★" label="Average Client Rating" />
-              </div>
+          <p className="display-sm !text-[clamp(1.375rem,2.2vw,1.75rem)] text-ink rv mt-8">
+            Ready to scale your practice?
+          </p>
+
+          <div className="rv mt-6 flex flex-col sm:flex-row gap-4">
+            <button
+              onClick={() => scrollToSection("cta")}
+              className="btn-ink group w-full sm:w-auto justify-center"
+            >
+              <span>Book Now</span>
+              <ArrowRight className="btn-arrow w-4 h-4" aria-hidden="true" />
+            </button>
+            <button
+              onClick={() => scrollToSection("employees")}
+              className="btn-line w-full sm:w-auto justify-center"
+            >
+              <span>Explore solutions</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Trust proof, settling toward the bottom of the first screen */}
+        <div className="mt-auto pt-[clamp(2rem,4.5vw,3.25rem)]">
+          <div className="pt-[clamp(1.5rem,3vw,2.25rem)] border-t border-[hsl(var(--ink)/0.08)]">
+            <p className="label text-stone-mid mb-7 rv">
+              Trusted by leading medical, dental, and law offices
+            </p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8">
+              <Stat value={150} suffix="+" label="Medical, Dental & Law Offices" />
+              <Stat value={1.8} decimals={1} suffix="M+" label="Patient Interactions" />
+              <Stat value={22} suffix="+" label="Years Healthcare Tech" />
+              <Stat value={4.9} decimals={1} suffix="★" label="Average Client Rating" />
             </div>
           </div>
         </div>
+      </div>
     </section>
   );
 };
