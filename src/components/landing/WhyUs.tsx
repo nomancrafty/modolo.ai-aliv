@@ -36,7 +36,7 @@ const WhyUs = () => {
         <div className="grid gap-x-16 gap-y-12 md:grid-cols-12">
           <div className="md:col-span-5">
             <p className="rv eyebrow label text-stone-mid mb-8">Why MODOLO AI</p>
-            <h2 className="rv-wipe display-lg text-ink md:sticky md:top-32">
+            <h2 className="rv-wipe display-lg !text-[clamp(2rem,4.8vw,3.7rem)] text-ink md:sticky md:top-32">
               Why Medical, Dental &amp; Law Offices Choose MODOLO AI Technology
             </h2>
           </div>
