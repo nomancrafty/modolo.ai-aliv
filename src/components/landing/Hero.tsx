@@ -72,69 +72,67 @@ const Hero = () => {
         />
       </div>
 
-      {/* Composition sits above the wash — one left-aligned stack that fills at
-          least the first screen, the trust proof settling toward the bottom. */}
-      <div ref={ref} className="relative shell flex-1 flex flex-col">
-        {/* Lead group: eyebrow, headline, promise, CTAs */}
-        <div className="max-w-[62rem]">
-          <div className="rv flex items-center gap-5 mb-[clamp(1.5rem,4vw,2.5rem)]">
-            <p className="label text-stone-mid">
-              Medical
-              <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
-              Dental
-              <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
-              Law
-            </p>
-            <span className="rv-rule hidden sm:block flex-1 h-px bg-rule origin-left" />
-          </div>
+      {/* Composition sits above the wash — one centered, deliberately composed
+          column that fills at least the first screen with balanced spacing. */}
+      <div
+        ref={ref}
+        className="relative shell flex-1 flex flex-col items-center justify-center text-center w-full"
+      >
+        {/* Industry label */}
+        <p className="rv label text-stone-mid">
+          Medical
+          <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
+          Dental
+          <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
+          Law
+        </p>
 
-          <h1 className="hero-title">
-            <span className="rv-wipe block text-ink">
-              Acquire More Patients &amp; Clients
-            </span>
-            <span className="rv-wipe block text-coral mt-2.5 md:mt-3">
-              Eliminate Manual Work &amp; Waste
-            </span>
-          </h1>
+        {/* Headline — constrained so the two messages stay a composed block */}
+        <h1 className="hero-title mx-auto max-w-[64rem] mt-[clamp(1.5rem,3vw,2.25rem)] text-balance">
+          <span className="rv-wipe block text-ink">
+            Acquire More Patients &amp; Clients
+          </span>
+          <span className="rv-wipe block text-coral mt-2 md:mt-3">
+            Eliminate Manual Work &amp; Waste
+          </span>
+        </h1>
 
-          <p className="prose-body rv mt-[clamp(1.75rem,3.5vw,2.5rem)] max-w-[48ch]">
-            Every day without AI, competitors win clients while your team loses
-            time to repetitive work.
-          </p>
+        {/* Supporting group: paragraph, prompt and CTAs read as one unit */}
+        <p className="prose-body rv mx-auto !max-w-[42rem] mt-[clamp(1.5rem,3vw,2.25rem)] text-pretty">
+          Every day without AI, competitors win clients while your team loses
+          time to repetitive work.
+        </p>
 
-          <p className="display-sm !text-[clamp(1.375rem,2.2vw,1.75rem)] text-ink rv mt-8">
-            Ready to scale your practice?
-          </p>
+        <p className="rv mt-7 text-[1.0625rem] font-medium text-stone-mid">
+          Ready to scale your practice?
+        </p>
 
-          <div className="rv mt-6 flex flex-col sm:flex-row gap-4">
-            <button
-              onClick={() => scrollToSection("cta")}
-              className="btn-ink group w-full sm:w-auto justify-center"
-            >
-              <span>Book Now</span>
-              <ArrowRight className="btn-arrow w-4 h-4" aria-hidden="true" />
-            </button>
-            <button
-              onClick={() => scrollToSection("employees")}
-              className="btn-line w-full sm:w-auto justify-center"
-            >
-              <span>Explore solutions</span>
-            </button>
-          </div>
+        <div className="rv mt-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 w-full sm:w-auto">
+          <button
+            onClick={() => scrollToSection("cta")}
+            className="btn-ink group w-full sm:w-auto justify-center"
+          >
+            <span>Book Now</span>
+            <ArrowRight className="btn-arrow w-4 h-4" aria-hidden="true" />
+          </button>
+          <button
+            onClick={() => scrollToSection("employees")}
+            className="btn-line w-full sm:w-auto justify-center"
+          >
+            <span>Explore solutions</span>
+          </button>
         </div>
 
-        {/* Trust proof, settling toward the bottom of the first screen */}
-        <div className="mt-auto pt-[clamp(2rem,4.5vw,3.25rem)]">
-          <div className="pt-[clamp(1.5rem,3vw,2.25rem)] border-t border-[hsl(var(--ink)/0.08)]">
-            <p className="label text-stone-mid mb-7 rv">
-              Trusted by leading medical, dental, and law offices
-            </p>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8">
-              <Stat value={150} suffix="+" label="Medical, Dental & Law Offices" />
-              <Stat value={1.8} decimals={1} suffix="M+" label="Patient Interactions" />
-              <Stat value={22} suffix="+" label="Years Healthcare Tech" />
-              <Stat value={4.9} decimals={1} suffix="★" label="Average Client Rating" />
-            </div>
+        {/* Trust proof beneath the CTA group — four columns, restrained divider */}
+        <div className="w-full mt-[clamp(3rem,7vw,5rem)] pt-[clamp(1.75rem,3.5vw,2.5rem)] border-t border-[hsl(var(--ink)/0.08)]">
+          <p className="label text-stone-mid mb-7 rv">
+            Trusted by leading medical, dental, and law offices
+          </p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8">
+            <Stat value={150} suffix="+" label="Medical, Dental & Law Offices" />
+            <Stat value={1.8} decimals={1} suffix="M+" label="Patient Interactions" />
+            <Stat value={22} suffix="+" label="Years Healthcare Tech" />
+            <Stat value={4.9} decimals={1} suffix="★" label="Average Client Rating" />
           </div>
         </div>
       </div>
