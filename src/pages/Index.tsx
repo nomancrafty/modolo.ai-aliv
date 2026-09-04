@@ -1,8 +1,6 @@
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
 import AIEmployees from "@/components/landing/AIEmployees";
-import Features from "@/components/landing/Features";
-import HowItWorks from "@/components/landing/HowItWorks";
 import Testimonials from "@/components/landing/Testimonials";
 import WhyUs from "@/components/landing/WhyUs";
 import CTA from "@/components/landing/CTA";
@@ -21,13 +19,9 @@ const Index = () => {
       <Header />
       <main id="main">
         {/* The thesis, the seven leaks it names, then the proof.
-            The brand pulse rules the sections apart. */}
+            The dividers rule the sections apart. */}
         <Hero />
         <AIEmployees />
-        <PulseDivider />
-        <Features />
-        <PulseDivider />
-        <HowItWorks />
         <PulseDivider />
         <Testimonials />
         <PulseDivider />

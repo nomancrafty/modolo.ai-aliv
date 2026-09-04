@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import modoloLogo from "@/assets/modolo-logo.png";
 import { useScrolled } from "@/hooks/useMotion";
 
+// New MODOLO AI logo, served from /public. Intrinsic size 2546×1664 — the
+// width/height attrs below carry that ratio so the browser reserves the right
+// box; `w-auto h-[54px]` drives the rendered size and preserves aspect ratio.
+const LOGO_SRC = "/favicon.png";
+
+// "MODOLO AI Solutions" points at the seven-employee section, which is the
+// replacement for the removed Demand Generation solutions block.
+// "How It Works" is intentionally NOT present: its section (#how-it-works)
+// was removed and no destination has been confirmed yet — awaiting the client.
 const NAV = [
-  { label: "Solutions", id: "features" },
-  { label: "AI Employees", id: "employees" },
-  { label: "How It Works", id: "how-it-works" },
+  { label: "MODOLO AI Solutions", id: "employees" },
   { label: "Results", id: "testimonials" },
   { label: "Why MODOLO AI", id: "why-us" },
 ];
@@ -22,12 +28,14 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 border-b ${
-        scrolled ? "bg-paper/92 backdrop-blur-md border-rule" : "bg-transparent border-transparent"
+      className={`fixed top-0 inset-x-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+        scrolled
+          ? "bg-paper/80 backdrop-blur-md border-[hsl(var(--ink)/0.08)] shadow-[0_8px_24px_-20px_hsl(var(--ink)/0.25)]"
+          : "bg-transparent backdrop-blur-0 border-transparent shadow-none"
       }`}
     >
       <div className="shell">
-        <div className="flex items-center justify-between gap-8 h-[88px]">
+        <div className="header-enter flex items-center justify-between gap-8 h-[88px]">
           <a
             href="#top"
             onClick={(ev) => {
@@ -38,10 +46,10 @@ const Header = () => {
             aria-label="MODOLO AI — back to top"
           >
             <img
-              src={modoloLogo}
+              src={LOGO_SRC}
               alt="MODOLO AI"
-              width={573}
-              height={401}
+              width={2546}
+              height={1664}
               className="w-auto h-[54px]"
             />
           </a>

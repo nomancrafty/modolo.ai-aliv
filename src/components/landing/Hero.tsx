@@ -1,9 +1,7 @@
 import { ArrowRight } from "lucide-react";
-import { HeroTrace } from "./VitalTrace";
-import { EMPLOYEES } from "./AIEmployees";
 import { useReveal, useCountUp } from "@/hooks/useMotion";
 
-/** One trust figure, counted up on arrival. Labels are unchanged. */
+/** One trust figure. Labels are unchanged. */
 function Stat({
   value,
   decimals = 0,
@@ -19,8 +17,8 @@ function Stat({
   const text = decimals > 0 ? shown.toFixed(decimals) : Math.round(shown).toString();
 
   return (
-    <div className="rv border-t border-ink pt-4">
-      <span ref={ref} className="figure block text-3xl md:text-[2.75rem] text-ink leading-none">
+    <div className="rv border-t border-[hsl(var(--ink)/0.10)] pt-4">
+      <span ref={ref} className="figure block text-[1.75rem] md:text-[2.25rem] text-ink leading-none">
         {text}
         <span className="text-coral">{suffix}</span>
       </span>
@@ -35,76 +33,102 @@ const Hero = () => {
   const scrollToSection = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-  // The chapters are gone; every marker now lands on the wheel.
-  const seekEmployee = (_i: number) =>
-    document.getElementById("employees")?.scrollIntoView({ behavior: "smooth" });
-
   return (
-    <section id="top" className="relative bg-paper pt-[132px] md:pt-[168px]">
-      <div ref={ref} className="shell">
-        {/* Eyebrow — the MODOLO acronym, set as an instrument label */}
-        <div className="rv flex items-center gap-5 pb-[clamp(2.5rem,6vw,4.5rem)]">
-          {/* MODOLO reads out of the first letters: MO-DO-LO */}
-          <p className="label text-stone-mid">
-            <span className="text-coral-ink">M</span>edical{" "}
-            <span className="text-coral-ink">O</span>ffice
-            <span className="text-stone-mid mx-2" aria-hidden="true">/</span>
-            <span className="text-coral-ink">D</span>ental{" "}
-            <span className="text-coral-ink">O</span>ffice
-            <span className="text-stone-mid mx-2" aria-hidden="true">/</span>
-            <span className="text-coral-ink">L</span>aw{" "}
-            <span className="text-coral-ink">O</span>ffice
-            <span className="text-stone-mid mx-2" aria-hidden="true">/</span>AI
-          </p>
-          <span className="rv-rule hidden sm:block flex-1 h-px bg-rule origin-left" />
-        </div>
+    <section
+      id="top"
+      className="relative overflow-hidden bg-paper flex flex-col min-h-svh pt-[108px] md:pt-[116px] pb-[var(--chapter-y)]"
+    >
+      {/* Full-width soft wash, fading into the shared page ground — no panel,
+          no border, no rounded edge. Peach and blue drift; lavender/mint rest. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: [
+              "radial-gradient(44% 52% at 46% 2%, hsl(var(--lavender) / 0.5), transparent 68%)",
+              "radial-gradient(40% 48% at 104% 46%, hsl(var(--mint) / 0.34), transparent 68%)",
+            ].join(", "),
+          }}
+        />
+        <span
+          className="glow hero-glow-1"
+          style={{
+            width: "min(44vw, 560px)",
+            height: "min(44vw, 560px)",
+            top: "-16%",
+            left: "-8%",
+            background: "radial-gradient(circle, hsl(var(--peach) / 0.5), transparent 66%)",
+          }}
+        />
+        <span
+          className="glow hero-glow-2"
+          style={{
+            width: "min(46vw, 600px)",
+            height: "min(46vw, 600px)",
+            bottom: "-22%",
+            right: "-10%",
+            background: "radial-gradient(circle, hsl(var(--blue) / 0.48), transparent 68%)",
+          }}
+        />
+      </div>
 
-        {/* The thesis */}
-        <h1 className="display-xl mb-[clamp(2rem,5vw,3.5rem)]">
-          <span className="rv-wipe text-ink">Plug the leaks.</span>
-          <span className="rv-wipe text-coral">Pour the fuel.</span>
+      {/* Composition sits above the wash — one centered, deliberately composed
+          column that fills at least the first screen with balanced spacing. */}
+      <div
+        ref={ref}
+        className="relative shell flex-1 flex flex-col items-center justify-center text-center w-full"
+      >
+        {/* Industry label */}
+        <p className="rv label text-stone-mid">
+          Medical
+          <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
+          Dental
+          <span className="text-stone-soft mx-2.5" aria-hidden="true">|</span>
+          Law
+        </p>
+
+        {/* Headline — constrained so the two messages stay a composed block */}
+        <h1 className="hero-title mx-auto max-w-[64rem] mt-[clamp(1.5rem,3vw,2.25rem)] text-balance">
+          <span className="rv-wipe block text-ink">
+            Acquire More Patients &amp; Clients
+          </span>
+          <span className="rv-wipe block text-coral mt-2 md:mt-3">
+            Eliminate Manual Work &amp; Waste
+          </span>
         </h1>
 
-        {/* The thesis, drawn: one rhythm carrying all seven leaks.
-            Each marker is a real button into its chapter. */}
-        <div className="rv mb-[clamp(3rem,7vw,4.5rem)]">
-          <HeroTrace onSeek={seekEmployee} labels={EMPLOYEES.map((e) => e.name)} />
+        {/* Supporting group: paragraph, prompt and CTAs read as one unit */}
+        <p className="prose-body rv mx-auto !max-w-[42rem] mt-[clamp(1.5rem,3vw,2.25rem)] text-pretty">
+          Every day without AI, competitors win clients while your team loses
+          time to repetitive work.
+        </p>
+
+        <p className="rv mt-7 text-[1.0625rem] font-medium text-stone-mid">
+          Ready to scale your practice?
+        </p>
+
+        <div className="rv mt-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 w-full sm:w-auto">
+          <button
+            onClick={() => scrollToSection("cta")}
+            className="btn-ink group w-full sm:w-auto justify-center"
+          >
+            <span>Book Now</span>
+            <ArrowRight className="btn-arrow w-4 h-4" aria-hidden="true" />
+          </button>
+          <button
+            onClick={() => scrollToSection("employees")}
+            className="btn-line w-full sm:w-auto justify-center"
+          >
+            <span>Explore solutions</span>
+          </button>
         </div>
 
-        {/* The existing promise, kept word for word */}
-        <div className="grid gap-x-16 gap-y-10 md:grid-cols-12 pb-[clamp(4rem,9vw,7rem)]">
-          {/* Subordinate to the thesis above: the promise, then the method. */}
-          <div className="md:col-span-6">
-            <h2 className="display-sm !text-[clamp(1.5rem,2.6vw,2.125rem)] text-ink rv">
-              Get More Patients &amp; Clients
-            </h2>
-            <p className="display-sm !text-[clamp(1.5rem,2.6vw,2.125rem)] text-stone-mid rv mt-2">
-              Operate Your Office More Effectively With Less Staff
-            </p>
-          </div>
-
-          <div className="md:col-span-6 flex flex-col items-start gap-9">
-            <p className="prose-body rv">
-              Instant engagement with prospects. We make sure every appointment
-              booking is handled automatically. Never miss a call. Never forget a
-              follow-up. Never lose a patient or client to a faster competitor.
-            </p>
-            <button
-              onClick={() => scrollToSection("cta")}
-              className="btn-ink rv"
-            >
-              <span>Book Now</span>
-              <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </button>
-          </div>
-        </div>
-
-        {/* Trust ledger */}
-        <div className="pb-[var(--chapter-y)]">
-          <p className="label text-stone-mid mb-8 rv">
-            Trusted by Modern Medical, Dental &amp; Law Offices
+        {/* Trust proof beneath the CTA group — four columns, restrained divider */}
+        <div className="w-full mt-[clamp(3rem,7vw,5rem)] pt-[clamp(1.75rem,3.5vw,2.5rem)] border-t border-[hsl(var(--ink)/0.08)]">
+          <p className="label text-stone-mid mb-7 rv">
+            Trusted by leading medical, dental, and law offices
           </p>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8">
             <Stat value={150} suffix="+" label="Medical, Dental & Law Offices" />
             <Stat value={1.8} decimals={1} suffix="M+" label="Patient Interactions" />
             <Stat value={22} suffix="+" label="Years Healthcare Tech" />

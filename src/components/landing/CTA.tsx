@@ -101,13 +101,40 @@ const CTA = () => {
   ];
 
   return (
-    <section id="cta" className="band-ink py-[var(--chapter-y)]">
-      <div ref={ref} className="shell">
-        <div className="grid gap-x-16 gap-y-16 lg:grid-cols-12">
+    <section
+      id="cta"
+      className="band-ink relative overflow-hidden py-[calc(var(--chapter-y)*1.15)]"
+    >
+      {/* Full-width peach warmth across the dark band — no inset panel. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span
+          className="glow glow-a"
+          style={{
+            width: "min(50vw, 620px)",
+            height: "min(34vw, 440px)",
+            top: "-14%",
+            left: "-6%",
+            background: "radial-gradient(circle, rgba(240,108,72,0.26), transparent 70%)",
+          }}
+        />
+        <span
+          className="glow glow-b"
+          style={{
+            width: "min(42vw, 520px)",
+            height: "min(30vw, 400px)",
+            bottom: "-16%",
+            right: "-8%",
+            background: "radial-gradient(circle, rgba(120,150,210,0.2), transparent 72%)",
+          }}
+        />
+      </div>
+
+      <div ref={ref} className="relative shell">
+          <div className="grid gap-x-16 gap-y-16 lg:grid-cols-12">
           {/* ---------- The brief ---------- */}
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-28">
-              <p className="label text-on-ink-muted mb-8 rv">
+              <p className="eyebrow label text-on-ink-muted mb-8 rv">
                 Book AI Free Consultation
               </p>
 
@@ -158,7 +185,7 @@ const CTA = () => {
             {!isSubmitted ? (
               <form
                 onSubmit={handleSubmit}
-                className="rv bg-paper-raised border border-paper-raised p-[clamp(1.5rem,4vw,3rem)] text-ink"
+                className="rv bg-paper-raised rounded-[clamp(18px,2.5vw,24px)] border border-[hsl(var(--ink)/0.06)] shadow-[0_24px_60px_-40px_rgba(0,0,0,0.55)] p-[clamp(1.5rem,4vw,3rem)] text-ink"
                 noValidate
               >
                 <div className="grid sm:grid-cols-2 gap-x-8 gap-y-7 mb-7">
@@ -313,7 +340,7 @@ const CTA = () => {
               <div
                 role="status"
                 aria-live="polite"
-                className="bg-paper-raised border border-paper-raised p-[clamp(1.5rem,4vw,3rem)] text-ink"
+                className="bg-paper-raised rounded-[clamp(18px,2.5vw,24px)] border border-[hsl(var(--ink)/0.06)] shadow-[0_24px_60px_-40px_rgba(0,0,0,0.55)] p-[clamp(1.5rem,4vw,3rem)] text-ink"
               >
                 <div className="flex items-center gap-4 mb-5">
                   <span className="w-8 h-8 shrink-0 bg-coral-ink flex items-center justify-center">
@@ -345,32 +372,32 @@ const CTA = () => {
           </div>
         </div>
 
-        {/* ---------- Closing line ---------- */}
-        <div className="mt-[clamp(5rem,11vw,9rem)] pt-14 border-t border-ink grid gap-x-16 gap-y-10 md:grid-cols-12 items-end">
-          <div className="md:col-span-8">
-            <h3 className="display-md text-on-ink mb-5 rv">
-              Ready to Grow Your Medical, Dental or Law Practice?
-            </h3>
-            <p className="prose-body rv">
-              Every day without AI is another day patients and clients book with
-              a faster competitor.
-            </p>
-          </div>
-          <div className="md:col-span-4 md:text-right">
-            <button
-              onClick={() => {
-                document
-                  .querySelector("#cta form")
-                  ?.scrollIntoView({ behavior: "smooth", block: "center" });
-              }}
-              className="btn-ink rv"
-            >
-              <span>Book Now</span>
-              <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </button>
+          {/* ---------- Closing line ---------- */}
+          <div className="relative mt-[clamp(3.5rem,8vw,6rem)] pt-14 border-t border-ink grid gap-x-16 gap-y-10 md:grid-cols-12 items-end">
+            <div className="md:col-span-8">
+              <h3 className="display-md text-on-ink mb-5 rv">
+                Ready to Grow Your Medical, Dental or Law Practice?
+              </h3>
+              <p className="prose-body rv">
+                Every day without AI is another day patients and clients book with
+                a faster competitor.
+              </p>
+            </div>
+            <div className="md:col-span-4 md:text-right">
+              <button
+                onClick={() => {
+                  document
+                    .querySelector("#cta form")
+                    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+                }}
+                className="btn-ink group rv"
+              >
+                <span>Book Now</span>
+                <ArrowRight className="btn-arrow w-4 h-4" aria-hidden="true" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
     </section>
   );
 };

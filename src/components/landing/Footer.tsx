@@ -1,26 +1,30 @@
 import { Twitter, Linkedin, Facebook } from "lucide-react";
-import modoloLogo from "@/assets/modolo-logo.png";
-import { SteadyTrace } from "./VitalTrace";
-import { useReveal, useScrollProgress } from "@/hooks/useMotion";
+import { useReveal } from "@/hooks/useMotion";
 
-/* Copy unchanged. The trace across the top is the narrative's last beat:
-   every leak sealed, the practice reading steady. */
+// New MODOLO AI logo, served from /public (intrinsic 2546×1664). `h-14 w-auto`
+// renders it and preserves aspect ratio; the attrs carry the intrinsic ratio.
+const LOGO_SRC = "/favicon.png";
+
+/* Copy unchanged. The old heartbeat trace across the top has been retired
+   with the rest of the pulse identity; the section now opens on the same
+   clean rule-and-diamond divider used between chapters. */
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const ref = useReveal<HTMLDivElement>({ threshold: 0.1, stagger: 40 });
-  const flowRef = useScrollProgress<HTMLDivElement>("--p", { start: 0.95, end: 0.55 });
 
   const links = {
+    // The old #features section was removed; these keep their wording and now
+    // point at the seven-employee solutions section (#employees).
     solutions: [
-      { label: "AI Voice Receptionist", href: "#features" },
-      { label: "Calendar Management", href: "#features" },
-      { label: "Review Management", href: "#features" },
-      { label: "SEO & Advertising", href: "#features" },
+      { label: "AI Voice Receptionist", href: "#employees" },
+      { label: "Calendar Management", href: "#employees" },
+      { label: "Review Management", href: "#employees" },
+      { label: "SEO & Advertising", href: "#employees" },
     ],
+    // "How It Works" removed with its section; no confirmed destination yet.
     company: [
       { label: "About Us", href: "#" },
-      { label: "How It Works", href: "#how-it-works" },
       { label: "Results", href: "#testimonials" },
       { label: "Contact", href: "#cta" },
     ],
@@ -38,20 +42,37 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-paper pt-[clamp(3rem,7vw,5rem)] pb-14">
-      <div ref={ref} className="shell">
-        <div ref={flowRef} className="mb-[clamp(3rem,7vw,5rem)]">
-          <SteadyTrace />
+    <footer className="relative overflow-hidden bg-paper pt-[clamp(3rem,7vw,5rem)] pb-14">
+      {/* A very faint, static corner haze — atmosphere, no motion. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span
+          className="glow"
+          style={{
+            width: "min(50vw, 560px)",
+            height: "min(30vw, 340px)",
+            bottom: "-14%",
+            right: "-6%",
+            background: "radial-gradient(circle, hsl(var(--peach) / 0.4), transparent 72%)",
+          }}
+        />
+      </div>
+      <div ref={ref} className="relative shell">
+        <div className="rv mb-[clamp(3rem,7vw,5rem)]" aria-hidden="true">
+          <div className="flex items-center gap-4">
+            <span className="h-px flex-1 bg-rule" />
+            <span className="w-1.5 h-1.5 rotate-45 bg-coral shrink-0" />
+            <span className="h-px flex-1 bg-rule" />
+          </div>
         </div>
 
         <div className="grid gap-x-12 gap-y-14 md:grid-cols-12">
           {/* Brand */}
           <div className="md:col-span-5">
             <img
-              src={modoloLogo}
+              src={LOGO_SRC}
               alt="MODOLO AI"
-              width={573}
-              height={401}
+              width={2546}
+              height={1664}
               className="h-14 w-auto mb-7"
             />
             <p className="text-[1.0625rem] text-ink mb-1.5">
@@ -113,7 +134,7 @@ const Footer = () => {
           <p className="label text-stone-mid">
             Medical, Dental &amp; Law Office AI Solutions
             <span className="text-stone-mid mx-2" aria-hidden="true">/</span>
-            www.aifordp.com
+            www.modolo.ai
           </p>
         </div>
       </div>
