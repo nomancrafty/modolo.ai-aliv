@@ -275,7 +275,7 @@ export default function EmployeeJourney({
                       </span>
                       <span
                         className={[
-                          "label text-[0.5625rem] md:text-[0.625rem] text-center leading-tight max-w-[9ch] md:max-w-[12ch] truncate md:whitespace-normal transition-colors duration-300",
+                          "label text-[0.5625rem] md:text-[0.625rem] text-center leading-tight whitespace-normal transition-colors duration-300",
                           state === "upcoming" ? "text-stone-mid" : "text-ink",
                         ].join(" ")}
                       >

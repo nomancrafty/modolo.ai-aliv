@@ -11,7 +11,6 @@ import {
   ArrowRight,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import type { CSSProperties } from "react";
 import { useReveal } from "@/hooks/useMotion";
 import EmployeeJourney from "./EmployeeJourney";
 
@@ -511,124 +510,78 @@ function Callouts({ blocks }: { blocks: Block[] }) {
   );
 }
 
-/* Two pale corner glows per card, positions alternating down the column, so
-   each card is unmistakably one family yet none feels repetitive. Soft radial
-   gradients (no blur filter) keep this cheap; .glow-a/.glow-b drift slowly. */
-const CORNER: Record<string, CSSProperties> = {
-  tl: { top: "-14%", left: "-10%" },
-  tr: { top: "-14%", right: "-10%" },
-  bl: { bottom: "-16%", left: "-10%" },
-  br: { bottom: "-16%", right: "-10%" },
-};
-const TINT: Record<string, string> = {
-  peach: "hsl(var(--peach) / 0.62)",
-  blue: "hsl(var(--blue) / 0.6)",
-  mint: "hsl(var(--mint) / 0.6)",
-  lavender: "hsl(var(--lavender) / 0.72)",
-};
-const GLOW_PATTERNS: [keyof typeof CORNER, keyof typeof TINT][][] = [
-  [["tl", "peach"], ["br", "blue"]],
-  [["bl", "peach"], ["tr", "mint"]],
-  [["tr", "lavender"], ["bl", "peach"]],
-];
-
-function cardGlows(i: number) {
-  return GLOW_PATTERNS[i % GLOW_PATTERNS.length];
-}
-
-function Chapter({ e, i }: { e: Exit; i: number }) {
+function Chapter({ e }: { e: Exit }) {
   const Icon = e.icon;
-  // Each card reveals on entry, its parts staggered in reading order.
+  // Each chapter reveals on entry, its parts staggered in reading order.
   const ref = useReveal<HTMLLIElement>({ stagger: 55 });
-  const pad = "p-[clamp(1.5rem,3.5vw,3rem)]";
 
   return (
     <li
       ref={ref}
       id={`exit-${e.n}`}
-      className="scroll-mt-[168px] md:scroll-mt-[184px]"
+      className="scroll-mt-[152px] md:scroll-mt-[176px]"
     >
-      <article className="rv panel card-accent">
-        {/* Pale drifting corner glows, clipped by the panel's rounded box. */}
-        {cardGlows(i).map(([corner, tint], gi) => (
-          <span
-            key={gi}
-            aria-hidden="true"
-            className={gi === 0 ? "glow-a" : "glow-b"}
-            style={{
-              position: "absolute",
-              ...CORNER[corner],
-              width: "min(55%, 380px)",
-              height: "min(55%, 360px)",
-              borderRadius: "9999px",
-              pointerEvents: "none",
-              zIndex: 0,
-              background: `radial-gradient(circle, ${TINT[tint]}, transparent 70%)`,
-            }}
-          />
-        ))}
-
-        <div className={`relative grid gap-x-12 gap-y-10 md:grid-cols-12 ${pad}`}>
-          {/* Left — identity rail */}
-          <div className="md:col-span-3">
-            <div className="flex items-baseline gap-3 mb-4">
-              <span className="label text-stone-mid">Exit</span>
-              <span className="figure text-[3rem] md:text-[3.5rem] leading-none text-coral">
-                {e.n}
-              </span>
-            </div>
-            <div className="flex items-center gap-2.5 mb-3">
-              <Icon
-                className="w-[18px] h-[18px] text-coral-ink shrink-0"
-                strokeWidth={1.5}
-                aria-hidden="true"
-              />
-              <h3 className="display-sm !text-[1.125rem] lg:!text-[1.25rem] text-ink leading-tight">
-                {e.name}
-              </h3>
-            </div>
-            <p className="label text-stone-mid">Exit {e.n} of 7</p>
+      {/* Open editorial chapter: a thin rule for grouping, no enclosing box. */}
+      <div className="grid gap-x-12 gap-y-10 md:grid-cols-12 border-t border-[hsl(var(--ink)/0.12)] pt-[clamp(2rem,4vw,3rem)]">
+        {/* Left — identity rail */}
+        <div className="rv md:col-span-3">
+          <div className="flex items-baseline gap-3 mb-4">
+            <span className="label text-stone-mid">Exit</span>
+            <span className="figure text-[3rem] md:text-[3.5rem] leading-none text-coral">
+              {e.n}
+            </span>
           </div>
-
-          {/* Center — title + narrative */}
-          <div className="md:col-span-5">
-            <blockquote className="voice text-[clamp(1.5rem,2.6vw,2.125rem)] text-ink mb-7">
-              &ldquo;{e.title}&rdquo;
-            </blockquote>
-            <div className="space-y-4 max-w-[68ch]">
-              {e.narrative.map((p, pi) => (
-                <p
-                  key={pi}
-                  className="text-[0.9375rem] md:text-base leading-relaxed text-stone-mid"
-                >
-                  {p}
-                </p>
-              ))}
-            </div>
+          <div className="flex items-center gap-2.5 mb-3">
+            <Icon
+              className="w-[18px] h-[18px] text-coral-ink shrink-0"
+              strokeWidth={1.5}
+              aria-hidden="true"
+            />
+            <h3 className="display-sm !text-[1.125rem] lg:!text-[1.25rem] text-ink leading-tight">
+              {e.name}
+            </h3>
           </div>
+          <p className="label text-stone-mid">Exit {e.n} of 7</p>
+        </div>
 
-          {/* Right — results / callouts */}
-          <div className="md:col-span-4">
-            <Callouts blocks={e.blocks} />
+        {/* Center — title + narrative */}
+        <div className="md:col-span-5">
+          <blockquote className="rv-wipe voice text-[clamp(1.5rem,2.6vw,2.125rem)] text-ink mb-7">
+            &ldquo;{e.title}&rdquo;
+          </blockquote>
+          <div className="rv space-y-4 max-w-[68ch]">
+            {e.narrative.map((p, pi) => (
+              <p
+                key={pi}
+                className="text-[0.9375rem] md:text-base leading-relaxed text-stone-mid"
+              >
+                {p}
+              </p>
+            ))}
           </div>
         </div>
 
-        {/* Full-width "Exit closed by" banner, flush to the card edges */}
-        <div className="relative bg-ink text-on-ink px-[clamp(1.5rem,3.5vw,3rem)] py-5 md:py-6">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-x-5 gap-y-2.5">
-            <span className="label text-coral-bright inline-flex items-center gap-2 shrink-0">
-              Exit closed by
-              <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </span>
-            <span className="text-[0.9375rem] leading-snug">
-              <span className="label text-on-ink">
-                {e.banner.tag} • {e.banner.solution}
-              </span>
-              <span className="text-on-ink-muted"> — {e.banner.detail}</span>
-            </span>
-          </div>
+        {/* Right — results / callouts */}
+        <div className="md:col-span-4">
+          <Callouts blocks={e.blocks} />
         </div>
-      </article>
+      </div>
+
+      {/* Full-width "Exit closed by" banner — a clean bar, no rounded box */}
+      <div className="rv mt-[clamp(1.5rem,3.5vw,2.5rem)] bg-ink text-on-ink px-6 py-5 md:px-8 md:py-6">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-x-5 gap-y-2.5">
+          <span className="label text-coral-bright inline-flex items-center gap-2 shrink-0">
+            Exit closed by
+            <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          </span>
+          <span className="text-[0.9375rem] leading-snug">
+            <span className="label text-on-ink">
+              {e.banner.tag} • {e.banner.solution}
+            </span>
+            <span className="text-on-ink-muted"> — {e.banner.detail}</span>
+          </span>
+        </div>
+      </div>
     </li>
   );
 }
@@ -642,24 +595,19 @@ const AIEmployees = () => {
       className="relative bg-paper py-[var(--chapter-y)]"
       aria-labelledby="employees-heading"
     >
-      {/* One extremely faint glow behind the introduction — atmosphere only,
-          never over the long body copy below. In its own clip layer so it
-          never adds page scroll and never blocks the sticky rail. */}
+      {/* Full-width ambient wash behind the whole run of chapters — a few soft
+          glows spaced down the section, alternating corners, fading into the
+          shared ground. Its own clip layer (not the section) so horizontal
+          overflow is contained without breaking the sticky navigator. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <span
-          className="glow"
-          style={{
-            width: "min(60vw, 640px)",
-            height: "min(40vw, 420px)",
-            top: "-6%",
-            left: "-4%",
-            background:
-              "radial-gradient(circle, rgba(255,176,132,0.16), transparent 70%)",
-          }}
-        />
+        <span className="glow glow-a" style={{ width: "min(60vw,640px)", height: "min(38vw,460px)", top: "1%", left: "-6%", background: "radial-gradient(circle, hsl(var(--peach) / 0.4), transparent 70%)" }} />
+        <span className="glow" style={{ width: "min(46vw,520px)", height: "min(32vw,420px)", top: "24%", right: "-8%", background: "radial-gradient(circle, hsl(var(--blue) / 0.38), transparent 72%)" }} />
+        <span className="glow glow-b" style={{ width: "min(48vw,540px)", height: "min(34vw,440px)", top: "48%", left: "-8%", background: "radial-gradient(circle, hsl(var(--lavender) / 0.4), transparent 72%)" }} />
+        <span className="glow" style={{ width: "min(46vw,520px)", height: "min(32vw,420px)", top: "72%", right: "-8%", background: "radial-gradient(circle, hsl(var(--peach) / 0.34), transparent 72%)" }} />
+        <span className="glow glow-a" style={{ width: "min(44vw,500px)", height: "min(30vw,400px)", bottom: "-2%", left: "-6%", background: "radial-gradient(circle, hsl(var(--mint) / 0.34), transparent 72%)" }} />
       </div>
 
       {/* Masthead */}
@@ -690,11 +638,11 @@ const AIEmployees = () => {
       {/* The seven-stage system line — sticky on md+, tracks the reader. */}
       <EmployeeJourney stages={EXITS.map((e) => ({ n: e.n, name: e.name }))} />
 
-      {/* The seven exits, each a premium chapter card */}
+      {/* The seven exits — open editorial chapters on the shared ground */}
       <div className="relative shell mt-[clamp(2rem,5vw,3.5rem)]">
-        <ol className="space-y-[clamp(1.5rem,3.5vw,2.5rem)]">
-          {EXITS.map((e, i) => (
-            <Chapter key={e.n} e={e} i={i} />
+        <ol className="space-y-[clamp(2.5rem,6vw,4.5rem)]">
+          {EXITS.map((e) => (
+            <Chapter key={e.n} e={e} />
           ))}
         </ol>
       </div>

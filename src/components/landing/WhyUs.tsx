@@ -46,7 +46,7 @@ const WhyUs = () => {
               {reasons.map((reason, i) => (
                 <li
                   key={reason}
-                  className="rv group flex items-center gap-6 md:gap-8 py-6 px-3 md:px-5 -mx-3 md:-mx-5 rounded-2xl border-b border-rule transition-colors duration-300 hover:bg-[hsl(var(--surface))]"
+                  className="rv group flex items-center gap-6 md:gap-8 py-6 border-b border-[hsl(var(--ink)/0.10)]"
                 >
                   <span className="figure text-sm text-stone-mid shrink-0 w-7 transition-colors duration-300 group-hover:text-coral-ink">
                     {String(i + 1).padStart(2, "0")}

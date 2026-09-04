@@ -36,43 +36,45 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="relative bg-paper pt-[104px] md:pt-[136px] pb-[clamp(2.5rem,6vw,4.5rem)]"
+      className="relative overflow-hidden bg-paper pt-[112px] md:pt-[128px] pb-[var(--chapter-y)]"
     >
-      <div className="shell">
-        {/* The whole hero lives in one inset, softly-washed rounded panel. */}
+      {/* Full-width soft wash, fading into the shared page ground — no panel,
+          no border, no rounded edge. Peach and blue drift; lavender/mint rest. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
-          ref={ref}
-          className="hero-panel px-[clamp(1.5rem,5vw,4.5rem)] py-[clamp(2.25rem,6vw,4.5rem)]"
-        >
-          {/* Decorative corner glows — peach/lavender at the upper-left, pale
-              blue at the lower-right. Non-interactive, clipped by the panel. */}
-          <span
-            aria-hidden="true"
-            className="glow hero-glow-1"
-            style={{
-              width: "min(46vw, 460px)",
-              height: "min(46vw, 460px)",
-              top: "-12%",
-              left: "-8%",
-              background:
-                "radial-gradient(circle, rgba(255,176,132,0.30), transparent 68%)",
-            }}
-          />
-          <span
-            aria-hidden="true"
-            className="glow hero-glow-2"
-            style={{
-              width: "min(48vw, 520px)",
-              height: "min(48vw, 520px)",
-              bottom: "-16%",
-              right: "-10%",
-              background:
-                "radial-gradient(circle, rgba(197,220,252,0.34), transparent 68%)",
-            }}
-          />
+          className="absolute inset-0"
+          style={{
+            background: [
+              "radial-gradient(44% 52% at 46% 2%, hsl(var(--lavender) / 0.5), transparent 68%)",
+              "radial-gradient(40% 48% at 104% 46%, hsl(var(--mint) / 0.34), transparent 68%)",
+            ].join(", "),
+          }}
+        />
+        <span
+          className="glow hero-glow-1"
+          style={{
+            width: "min(44vw, 560px)",
+            height: "min(44vw, 560px)",
+            top: "-16%",
+            left: "-8%",
+            background: "radial-gradient(circle, hsl(var(--peach) / 0.5), transparent 66%)",
+          }}
+        />
+        <span
+          className="glow hero-glow-2"
+          style={{
+            width: "min(46vw, 600px)",
+            height: "min(46vw, 600px)",
+            bottom: "-22%",
+            right: "-10%",
+            background: "radial-gradient(circle, hsl(var(--blue) / 0.48), transparent 68%)",
+          }}
+        />
+      </div>
 
-          {/* Composition sits above the wash. */}
-          <div className="relative">
+      {/* Composition sits above the wash, aligned in the shared container. */}
+      <div ref={ref} className="relative shell">
+        <div>
             {/* Top — two columns: identity/headline left, promise + CTAs right */}
             <div className="grid gap-x-12 gap-y-9 lg:grid-cols-12 lg:items-center">
               {/* Left: eyebrow + headline */}
@@ -139,7 +141,6 @@ const Hero = () => {
             </div>
           </div>
         </div>
-      </div>
     </section>
   );
 };

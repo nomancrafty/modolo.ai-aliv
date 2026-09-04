@@ -69,7 +69,7 @@
     /* --- Rhythm --- */
     --measure: 62ch;
     --gutter: clamp(1.25rem, 4vw, 4rem);
-    --chapter-y: clamp(4rem, 8vh, 6.5rem);
+    --chapter-y: clamp(2.5rem, 5vw, 5.5rem);
     --chapter-gap: clamp(2.75rem, 5vw, 4.5rem);
   }
 }

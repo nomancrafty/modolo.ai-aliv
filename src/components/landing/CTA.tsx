@@ -101,26 +101,36 @@ const CTA = () => {
   ];
 
   return (
-    <section id="cta" className="bg-paper py-[var(--chapter-y)]">
-      <div className="shell">
-        <div
-          ref={ref}
-          className="band-ink relative overflow-hidden rounded-[clamp(24px,4vw,36px)] px-[clamp(1.25rem,5vw,4rem)] py-[clamp(2.5rem,6vw,4.5rem)]"
-        >
-          {/* A subtle peach corner glow warming the dark panel. */}
-          <span
-            aria-hidden="true"
-            className="glow glow-a"
-            style={{
-              width: "min(46vw, 520px)",
-              height: "min(34vw, 380px)",
-              top: "-12%",
-              left: "-6%",
-              background: "radial-gradient(circle, rgba(240,108,72,0.28), transparent 70%)",
-            }}
-          />
+    <section
+      id="cta"
+      className="band-ink relative overflow-hidden py-[calc(var(--chapter-y)*1.15)]"
+    >
+      {/* Full-width peach warmth across the dark band — no inset panel. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span
+          className="glow glow-a"
+          style={{
+            width: "min(50vw, 620px)",
+            height: "min(34vw, 440px)",
+            top: "-14%",
+            left: "-6%",
+            background: "radial-gradient(circle, rgba(240,108,72,0.26), transparent 70%)",
+          }}
+        />
+        <span
+          className="glow glow-b"
+          style={{
+            width: "min(42vw, 520px)",
+            height: "min(30vw, 400px)",
+            bottom: "-16%",
+            right: "-8%",
+            background: "radial-gradient(circle, rgba(120,150,210,0.2), transparent 72%)",
+          }}
+        />
+      </div>
 
-          <div className="relative grid gap-x-16 gap-y-16 lg:grid-cols-12">
+      <div ref={ref} className="relative shell">
+          <div className="grid gap-x-16 gap-y-16 lg:grid-cols-12">
           {/* ---------- The brief ---------- */}
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-28">
@@ -388,7 +398,6 @@ const CTA = () => {
             </div>
           </div>
         </div>
-      </div>
     </section>
   );
 };
